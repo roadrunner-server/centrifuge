@@ -3,10 +3,12 @@ package centrifuge
 import (
 	"context"
 
+	"github.com/goccy/go-json"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
 	"github.com/roadrunner-server/sdk/v3/payload"
 	"github.com/segmentio/encoding/proto"
 	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/proto/centrifugo/proxy/v1"
+	"google.golang.org/grpc/metadata"
 )
 
 type Proxy struct {
@@ -19,8 +21,16 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 		return nil, err
 	}
 
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "connect")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
 	pld := &payload.Payload{
-		Context: []byte("connect"),
+		Context: meta,
 		Body:    data,
 		Codec:   frame.CodecProto,
 	}
@@ -48,8 +58,16 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 		return nil, err
 	}
 
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "refresh")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
 	pld := &payload.Payload{
-		Context: []byte("refresh"),
+		Context: meta,
 		Body:    data,
 		Codec:   frame.CodecProto,
 	}
@@ -77,8 +95,16 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 		return nil, err
 	}
 
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "subscribe")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
 	pld := &payload.Payload{
-		Context: []byte("subscribe"),
+		Context: meta,
 		Body:    data,
 		Codec:   frame.CodecProto,
 	}
@@ -106,8 +132,16 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 		return nil, err
 	}
 
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "publish")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
 	pld := &payload.Payload{
-		Context: []byte("publish"),
+		Context: meta,
 		Body:    data,
 		Codec:   frame.CodecProto,
 	}
@@ -135,8 +169,16 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 		return nil, err
 	}
 
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "rpc")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
 	pld := &payload.Payload{
-		Context: []byte("rpc"),
+		Context: meta,
 		Body:    data,
 		Codec:   frame.CodecProto,
 	}

@@ -18,6 +18,9 @@ import (
 
 const (
 	name string = "centrifuge"
+
+	RRMode           = "RR_MODE"
+	RRModeCentrifuge = "CENTRIFUGE"
 )
 
 type Configurer interface {
@@ -53,6 +56,10 @@ type Plugin struct {
 	log    *zap.Logger
 	server Server
 
+	// proxy server
+	gRPCServer *grpc.Server
+	client     *client
+
 	pool Pool
 }
 
@@ -67,22 +74,27 @@ func (p *Plugin) Init(cfg Configurer, log *zap.Logger, server Server) error {
 		return errors.E(op, err)
 	}
 
-	p.cfg.InitDefaults()
+	err = p.cfg.InitDefaults()
+	if err != nil {
+		return err
+	}
 
 	p.log = new(zap.Logger)
 	*p.log = *log
 	p.server = server
+	p.gRPCServer = grpc.NewServer()
+	p.client = newClient(p.cfg.GrpcApiAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
 
 	return nil
 }
 
 func (p *Plugin) Serve() chan error {
 	errCh := make(chan error, 1)
-	const op = errors.Op("centrifugo_serve")
+	const op = errors.Op("centrifuge_serve")
 
 	var err error
 	p.mu.Lock()
-	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, nil, nil)
+	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{RRMode: RRModeCentrifuge}, nil)
 	p.mu.Unlock()
 	if err != nil {
 		errCh <- err
@@ -95,11 +107,12 @@ func (p *Plugin) Serve() chan error {
 		return errCh
 	}
 
-	server := grpc.NewServer()
-	centrifugov1.RegisterCentrifugoProxyServer(server, &Proxy{p: p})
+	p.mu.Lock()
+	centrifugov1.RegisterCentrifugoProxyServer(p.gRPCServer, &Proxy{p: p})
+	p.mu.Unlock()
 
 	go func() {
-		errL := server.Serve(l)
+		errL := p.gRPCServer.Serve(l)
 		if errL != nil {
 			if stderr.Is(errL, grpc.ErrServerStopped) {
 				p.log.Info("grpc proxy stopped")
@@ -110,13 +123,28 @@ func (p *Plugin) Serve() chan error {
 		}
 	}()
 
+	err = p.client.connect()
+	if err != nil {
+		errCh <- err
+		return errCh
+	}
+
 	return errCh
 }
 
 func (p *Plugin) Stop() error {
+	p.mu.Lock()
+	p.gRPCServer.GracefulStop()
+	p.mu.Unlock()
 	return nil
 }
 
 func (p *Plugin) Name() string {
 	return name
+}
+
+func (p *Plugin) RPC() any {
+	return &rpc{
+		client: p.client,
+	}
 }

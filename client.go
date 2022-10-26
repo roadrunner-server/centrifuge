@@ -47,13 +47,17 @@ func (c *client) connect() error {
 		opts = append(opts, grpc.UseCompressor("gzip"))
 	}
 
+	var cert tls.Certificate
+	var err error
+	if c.tls != nil {
+		cert, err = tls.LoadX509KeyPair(c.tls.Cert, c.tls.Key)
+		if err != nil {
+			return err
+		}
+	}
+
 	operation := func() error {
 		if c.tls != nil {
-			cert, err := tls.LoadX509KeyPair(c.tls.Cert, c.tls.Key)
-			if err != nil {
-				return err
-			}
-
 			tlscfg := &tls.Config{
 				Certificates: []tls.Certificate{cert},
 				MinVersion:   tls.VersionTLS12,
@@ -80,7 +84,7 @@ func (c *client) connect() error {
 		return nil
 	}
 
-	err := backoff.Retry(operation, cb)
+	err = backoff.Retry(operation, cb)
 	if err != nil {
 		return err
 	}

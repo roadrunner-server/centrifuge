@@ -20,7 +20,7 @@ const (
 	name string = "centrifuge"
 
 	RRMode           = "RR_MODE"
-	RRModeCentrifuge = "Centrifuge"
+	RRModeCentrifuge = "centrifuge"
 )
 
 type Configurer interface {

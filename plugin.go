@@ -146,5 +146,6 @@ func (p *Plugin) Name() string {
 func (p *Plugin) RPC() any {
 	return &rpc{
 		client: p.client,
+		log:    p.log,
 	}
 }

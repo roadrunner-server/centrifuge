@@ -16,6 +16,7 @@ type Proxy struct {
 }
 
 func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectRequest) (*centrifugov1.ConnectResponse, error) {
+	p.p.log.Debug("got connect proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -53,6 +54,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 }
 
 func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshRequest) (*centrifugov1.RefreshResponse, error) {
+	p.p.log.Debug("got refresh proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -90,6 +92,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 }
 
 func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRequest) (*centrifugov1.SubscribeResponse, error) {
+	p.p.log.Debug("got subscribe proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -127,6 +130,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 }
 
 func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishRequest) (*centrifugov1.PublishResponse, error) {
+	p.p.log.Debug("got publish proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -164,6 +168,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 }
 
 func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*centrifugov1.RPCResponse, error) {
+	p.p.log.Debug("got RPC proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err

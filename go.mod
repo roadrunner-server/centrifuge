@@ -9,7 +9,7 @@ require (
 	github.com/roadrunner-server/goridge/v3 v3.6.1
 	github.com/roadrunner-server/sdk/v3 v3.0.0-beta.4
 	github.com/segmentio/encoding v0.3.6
-	go.buf.build/grpc/go/roadrunner-server/api v1.4.20
+	go.buf.build/grpc/go/roadrunner-server/api v1.4.21
 	go.uber.org/zap v1.23.0
 	google.golang.org/grpc v1.50.1
 )
@@ -31,6 +31,6 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
-	google.golang.org/genproto v0.0.0-20221024153911-1573dae28c9c // indirect
+	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )

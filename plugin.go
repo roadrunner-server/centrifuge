@@ -11,7 +11,7 @@ import (
 	staticPool "github.com/roadrunner-server/sdk/v3/pool/static_pool"
 	"github.com/roadrunner-server/sdk/v3/utils"
 	"github.com/roadrunner-server/sdk/v3/worker"
-	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/proto/centrifugo/proxy/v1"
+	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )

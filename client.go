@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	v1Client "go.buf.build/grpc/go/roadrunner-server/api/proto/centrifugo/api/v1"
+	v1Client "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/api/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"

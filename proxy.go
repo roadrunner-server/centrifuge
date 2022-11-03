@@ -7,7 +7,7 @@ import (
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
 	"github.com/roadrunner-server/sdk/v3/payload"
 	"github.com/segmentio/encoding/proto"
-	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/proto/centrifugo/proxy/v1"
+	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
 	"google.golang.org/grpc/metadata"
 )
 

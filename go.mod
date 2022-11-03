@@ -7,9 +7,9 @@ require (
 	github.com/goccy/go-json v0.9.11
 	github.com/roadrunner-server/errors v1.2.0
 	github.com/roadrunner-server/goridge/v3 v3.6.1
-	github.com/roadrunner-server/sdk/v3 v3.0.0-beta.4
+	github.com/roadrunner-server/sdk/v3 v3.0.0-beta.5
 	github.com/segmentio/encoding v0.3.6
-	go.buf.build/grpc/go/roadrunner-server/api v1.4.23
+	go.buf.build/grpc/go/roadrunner-server/api v1.4.27
 	go.uber.org/zap v1.23.0
 	google.golang.org/grpc v1.50.1
 )

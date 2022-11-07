@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/roadrunner-server/errors"
+	"github.com/roadrunner-server/sdk/v3/metrics"
 	"github.com/roadrunner-server/sdk/v3/payload"
 	"github.com/roadrunner-server/sdk/v3/pool"
 	staticPool "github.com/roadrunner-server/sdk/v3/pool/static_pool"
@@ -59,8 +60,9 @@ type Plugin struct {
 	server Server
 
 	// proxy server
-	gRPCServer *grpc.Server
-	client     *client
+	gRPCServer    *grpc.Server
+	client        *client
+	statsExporter *metrics.StatsExporter
 
 	pool Pool
 }
@@ -86,6 +88,7 @@ func (p *Plugin) Init(cfg Configurer, log *zap.Logger, server Server) error {
 	p.server = server
 	p.gRPCServer = grpc.NewServer()
 	p.client = newClient(p.cfg.GrpcApiAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
+	p.statsExporter = newWorkersExporter(p)
 
 	return nil
 }

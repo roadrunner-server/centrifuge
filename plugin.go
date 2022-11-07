@@ -139,7 +139,7 @@ func (p *Plugin) Serve() chan error {
 
 func (p *Plugin) Stop() error {
 	p.mu.Lock()
-	p.gRPCServer.GracefulStop()
+	p.gRPCServer.Stop()
 	p.mu.Unlock()
 	return nil
 }

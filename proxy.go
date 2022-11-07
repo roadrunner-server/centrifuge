@@ -8,6 +8,7 @@ import (
 	"github.com/roadrunner-server/sdk/v3/payload"
 	"github.com/segmentio/encoding/proto"
 	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
+	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -168,7 +169,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 }
 
 func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*centrifugov1.RPCResponse, error) {
-	p.p.log.Debug("got RPC proxy request")
+	p.p.log.Debug("got RPC proxy request", zap.String("method", request.Method))
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err

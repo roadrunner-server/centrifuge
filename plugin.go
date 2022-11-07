@@ -169,8 +169,6 @@ func (p *Plugin) Workers() []*process.State {
 // Reset destroys the old pool and replaces it with new one, waiting for old pool to die
 func (p *Plugin) Reset() error {
 	const op = errors.Op("centrifuge_plugin_reset")
-	p.mu.Lock()
-	defer p.mu.Unlock()
 
 	p.log.Info("reset signal was received")
 

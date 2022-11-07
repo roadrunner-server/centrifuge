@@ -4,11 +4,13 @@ import (
 	"context"
 	stderr "errors"
 	"sync"
+	"time"
 
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/sdk/v3/payload"
 	"github.com/roadrunner-server/sdk/v3/pool"
 	staticPool "github.com/roadrunner-server/sdk/v3/pool/static_pool"
+	"github.com/roadrunner-server/sdk/v3/state/process"
 	"github.com/roadrunner-server/sdk/v3/utils"
 	"github.com/roadrunner-server/sdk/v3/worker"
 	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
@@ -139,6 +141,52 @@ func (p *Plugin) Stop() error {
 	return nil
 }
 
+// Workers returns slice with the process states for the workers
+func (p *Plugin) Workers() []*process.State {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	workers := p.workers()
+	if workers == nil {
+		return nil
+	}
+
+	ps := make([]*process.State, 0, len(workers))
+	for i := 0; i < len(workers); i++ {
+		state, err := process.WorkerProcessState(workers[i])
+		if err != nil {
+			return nil
+		}
+		ps = append(ps, state)
+	}
+
+	return ps
+}
+
+// Reset destroys the old pool and replaces it with new one, waiting for old pool to die
+func (p *Plugin) Reset() error {
+	const op = errors.Op("centrifuge_plugin_reset")
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	p.log.Info("reset signal was received")
+
+	ctxTout, cancel := context.WithTimeout(context.Background(), time.Second*60)
+	defer cancel()
+	if p.pool == nil {
+		p.log.Info("pool is nil, nothing to reset")
+		return nil
+	}
+
+	err := p.pool.Reset(ctxTout)
+	if err != nil {
+		return errors.E(op, err)
+	}
+
+	p.log.Info("plugin was successfully reset")
+	return nil
+}
+
 func (p *Plugin) Name() string {
 	return name
 }
@@ -148,4 +196,12 @@ func (p *Plugin) RPC() any {
 		client: p.client,
 		log:    p.log,
 	}
+}
+
+// internal
+func (p *Plugin) workers() []*worker.Process {
+	if p == nil || p.pool == nil {
+		return nil
+	}
+	return p.pool.Workers()
 }

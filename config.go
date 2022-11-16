@@ -29,7 +29,7 @@ func (c *Config) InitDefaults() error {
 	const op = errors.Op("centrifuge_init_defaults")
 
 	if c.GrpcApiAddress == "" {
-		c.GrpcApiAddress = "tcp://127.0.0.1:10000"
+		c.GrpcApiAddress = "127.0.0.1:10000"
 	}
 
 	if c.ProxyAddress == "" {

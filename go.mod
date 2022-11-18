@@ -12,7 +12,7 @@ require (
 	github.com/segmentio/encoding v0.3.6
 	go.buf.build/grpc/go/roadrunner-server/api v1.4.27
 	go.uber.org/zap v1.23.0
-	google.golang.org/grpc v1.50.1
+	google.golang.org/grpc v1.51.0
 )
 
 require (

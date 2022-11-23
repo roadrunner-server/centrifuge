@@ -32,6 +32,10 @@ func (c *Config) InitDefaults() error {
 		c.GrpcApiAddress = "127.0.0.1:10000"
 	}
 
+	if len(c.GrpcApiAddress) > 7 && c.GrpcApiAddress[0:6] == "tcp://" {
+		c.GrpcApiAddress = c.GrpcApiAddress[6:]
+	}
+
 	if c.ProxyAddress == "" {
 		c.ProxyAddress = "tcp://127.0.0.1:30000"
 	}

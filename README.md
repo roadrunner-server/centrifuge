@@ -1,2 +1,1 @@
-# centrifuge
-RoadRunner plugin for Centrifugal: https://github.com/centrifugal
+# Docs: [link](https://roadrunner.dev/docs/plugins-centrifuge/2.x/en)

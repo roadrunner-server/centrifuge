@@ -36,15 +36,16 @@ type Configurer interface {
 type Pool interface {
 	// Workers returns worker list associated with the pool.
 	Workers() (workers []*worker.Process)
-
 	// Exec payload
 	Exec(ctx context.Context, p *payload.Payload) (*payload.Payload, error)
-
 	// Reset kill all workers inside the watcher and replaces with new
 	Reset(ctx context.Context) error
-
 	// Destroy all underlying stack (but let them complete the task).
 	Destroy(ctx context.Context)
+}
+
+type Logger interface {
+	NamedLogger(name string) *zap.Logger
 }
 
 // Server creates workers for the application.
@@ -67,7 +68,7 @@ type Plugin struct {
 	pool Pool
 }
 
-func (p *Plugin) Init(cfg Configurer, log *zap.Logger, server Server) error {
+func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 	const op = errors.Op("centrifuge_plugin_init")
 	if !cfg.Has(name) {
 		return errors.E(op, errors.Disabled)
@@ -83,8 +84,7 @@ func (p *Plugin) Init(cfg Configurer, log *zap.Logger, server Server) error {
 		return err
 	}
 
-	p.log = new(zap.Logger)
-	*p.log = *log
+	p.log = log.NamedLogger(name)
 	p.server = server
 	p.gRPCServer = grpc.NewServer()
 	p.client = newClient(p.cfg.GrpcApiAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
@@ -137,11 +137,21 @@ func (p *Plugin) Serve() chan error {
 	return errCh
 }
 
-func (p *Plugin) Stop() error {
-	p.mu.Lock()
-	p.gRPCServer.Stop()
-	p.mu.Unlock()
-	return nil
+func (p *Plugin) Stop(ctx context.Context) error {
+	stCh := make(chan struct{}, 1)
+	go func() {
+		p.mu.Lock()
+		p.gRPCServer.Stop()
+		p.mu.Unlock()
+		stCh <- struct{}{}
+	}()
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-stCh:
+		return nil
+	}
 }
 
 // Workers returns slice with the process states for the workers

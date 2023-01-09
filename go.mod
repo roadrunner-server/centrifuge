@@ -1,4 +1,4 @@
-module github.com/roadrunner-server/centrifuge/v3
+module github.com/roadrunner-server/centrifuge/v4
 
 go 1.19
 
@@ -8,7 +8,7 @@ require (
 	github.com/prometheus/client_golang v1.14.0
 	github.com/roadrunner-server/errors v1.2.0
 	github.com/roadrunner-server/goridge/v3 v3.6.2
-	github.com/roadrunner-server/sdk/v3 v3.1.0
+	github.com/roadrunner-server/sdk/v4 v4.0.0
 	github.com/segmentio/encoding v0.3.6
 	github.com/stretchr/testify v1.8.1
 	go.buf.build/grpc/go/roadrunner-server/api v1.4.27
@@ -42,7 +42,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
-	google.golang.org/genproto v0.0.0-20230104163317-caabf589fcbf // indirect
+	google.golang.org/genproto v0.0.0-20230106154932-a12b697841d9 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

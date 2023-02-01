@@ -1,6 +1,6 @@
 module github.com/roadrunner-server/centrifuge/v4
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0
@@ -42,7 +42,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
-	google.golang.org/genproto v0.0.0-20230125152338-dcaf20b6aeaa // indirect
+	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

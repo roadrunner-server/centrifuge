@@ -10,7 +10,7 @@ require (
 	github.com/roadrunner-server/goridge/v3 v3.6.2
 	github.com/roadrunner-server/sdk/v4 v4.2.0
 	github.com/segmentio/encoding v0.3.6
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	go.buf.build/grpc/go/roadrunner-server/api v1.4.31
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.53.0

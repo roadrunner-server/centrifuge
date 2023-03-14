@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
+
 	// Will register via init
 	_ "google.golang.org/grpc/encoding/gzip"
 )

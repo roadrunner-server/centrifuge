@@ -11,7 +11,7 @@ require (
 	github.com/roadrunner-server/sdk/v4 v4.2.0
 	github.com/segmentio/encoding v0.3.6
 	github.com/stretchr/testify v1.8.2
-	go.buf.build/grpc/go/roadrunner-server/api v1.4.32
+	go.buf.build/grpc/go/roadrunner-server/api v1.4.36
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.53.0
 )
@@ -43,6 +43,6 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
-	google.golang.org/protobuf v1.29.1 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

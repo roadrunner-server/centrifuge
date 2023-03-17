@@ -36,7 +36,129 @@ service CentrifugoApi {
     rpc RevokeToken (RevokeTokenRequest) returns (RevokeTokenResponse) {}
     rpc InvalidateUserTokens (InvalidateUserTokensRequest) returns (InvalidateUserTokensResponse) {}
 }
+
+// added in 2023.1
+service CentrifugoApi {
+  	rpc Batch(BatchRequest) returns (BatchResponse) {}
+  	rpc DeviceRegister(DeviceRegisterRequest) returns (DeviceRegisterResponse) {}
+  	rpc DeviceUpdate(DeviceUpdateRequest) returns (DeviceUpdateResponse) {}
+  	rpc DeviceRemove(DeviceRemoveRequest) returns (DeviceRemoveResponse) {}
+  	rpc DeviceList(DeviceListRequest) returns (DeviceListResponse) {}
+  	rpc PushUserChannelList(PushUserChannelListRequest) returns (PushUserChannelListResponse) {}
+  	rpc PushUserChannelUpdate(PushUserChannelUpdateRequest) returns (PushUserChannelUpdateResponse) {}
+  	rpc SendPushNotification(SendPushNotificationRequest) returns (SendPushNotificationResponse) {}
+}
 */
+
+func (r *rpc) SendPushNotification(in *v1Client.SendPushNotificationRequest, out *v1Client.SendPushNotificationResponse) error {
+	r.log.Debug("got send push notification request")
+
+	resp, err := r.client.client().SendPushNotification(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) PushUserChannelUpdate(in *v1Client.PushUserChannelUpdateRequest, out *v1Client.PushUserChannelUpdateResponse) error {
+	r.log.Debug("got device push user channel update request")
+
+	resp, err := r.client.client().PushUserChannelUpdate(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) PushUserChannelList(in *v1Client.PushUserChannelListRequest, out *v1Client.PushUserChannelListResponse) error {
+	r.log.Debug("got device push user channel list request")
+
+	resp, err := r.client.client().PushUserChannelList(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceListResponse) error {
+	r.log.Debug("got device remove request")
+
+	resp, err := r.client.client().DeviceList(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.DeviceRemoveResponse) error {
+	r.log.Debug("got device remove request")
+
+	resp, err := r.client.client().DeviceRemove(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceUpdate(in *v1Client.DeviceUpdateRequest, out *v1Client.DeviceUpdateResponse) error {
+	r.log.Debug("got device update request")
+
+	resp, err := r.client.client().DeviceUpdate(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceRegister(in *v1Client.DeviceRegisterRequest, out *v1Client.DeviceRegisterResponse) error {
+	r.log.Debug("got device register request")
+
+	resp, err := r.client.client().DeviceRegister(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) error {
+	r.log.Debug("got butch request")
+
+	resp, err := r.client.client().Batch(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Replies = resp.GetReplies()
+	return nil
+}
 
 func (r *rpc) Publish(in *v1Client.PublishRequest, out *v1Client.PublishResponse) error {
 	r.log.Debug("got publish request")

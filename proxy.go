@@ -205,3 +205,42 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 
 	return rresp, nil
 }
+
+func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefreshRequest) (*centrifugov1.SubRefreshResponse, error) {
+	p.p.log.Debug("got RPC SubRefresh request", zap.String("channel", request.Channel))
+
+	data, err := proto.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "subrefresh")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
+	pld := &payload.Payload{
+		Context: meta,
+		Body:    data,
+		Codec:   frame.CodecProto,
+	}
+
+	p.p.mu.RLock()
+	resp, err := p.p.pool.Exec(ctx, pld)
+	p.p.mu.RUnlock()
+	if err != nil {
+		return nil, err
+	}
+
+	rresp := &centrifugov1.SubRefreshResponse{}
+
+	err = proto.Unmarshal(resp.Body, &rresp)
+	if err != nil {
+		return nil, err
+	}
+
+	return rresp, nil
+}

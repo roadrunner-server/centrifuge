@@ -6,10 +6,10 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
 	"github.com/roadrunner-server/sdk/v4/payload"
-	"github.com/segmentio/encoding/proto"
 	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
 )
 
 type Proxy struct {
@@ -30,7 +30,6 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 	if err != nil {
 		return nil, err
 	}
-
 	pld := &payload.Payload{
 		Context: meta,
 		Body:    data,
@@ -46,7 +45,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 
 	cr := &centrifugov1.ConnectResponse{}
 
-	err = proto.Unmarshal(resp.Body, &cr)
+	err = proto.Unmarshal(resp.Body, cr)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +83,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 
 	rr := &centrifugov1.RefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, &rr)
+	err = proto.Unmarshal(resp.Body, rr)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +121,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 
 	sr := &centrifugov1.SubscribeResponse{}
 
-	err = proto.Unmarshal(resp.Body, &sr)
+	err = proto.Unmarshal(resp.Body, sr)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +159,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 
 	pr := &centrifugov1.PublishResponse{}
 
-	err = proto.Unmarshal(resp.Body, &pr)
+	err = proto.Unmarshal(resp.Body, pr)
 	if err != nil {
 		return nil, err
 	}
@@ -198,7 +197,7 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 
 	rresp := &centrifugov1.RPCResponse{}
 
-	err = proto.Unmarshal(resp.Body, &rresp)
+	err = proto.Unmarshal(resp.Body, rresp)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +236,7 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 
 	rresp := &centrifugov1.SubRefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, &rresp)
+	err = proto.Unmarshal(resp.Body, rresp)
 	if err != nil {
 		return nil, err
 	}

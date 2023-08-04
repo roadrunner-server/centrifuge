@@ -6,11 +6,11 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/goccy/go-json v0.10.2
 	github.com/prometheus/client_golang v1.16.0
+	github.com/roadrunner-server/api/v4 v4.6.1
 	github.com/roadrunner-server/errors v1.2.0
 	github.com/roadrunner-server/goridge/v3 v3.6.3
 	github.com/roadrunner-server/sdk/v4 v4.4.0-beta.3
 	github.com/stretchr/testify v1.8.4
-	go.buf.build/grpc/go/roadrunner-server/api v1.4.40
 	go.uber.org/zap v1.25.0
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0

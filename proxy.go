@@ -2,6 +2,7 @@ package centrifuge
 
 import (
 	"context"
+	"errors"
 
 	"github.com/goccy/go-json"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
@@ -37,15 +38,17 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
 	cr := &centrifugov1.ConnectResponse{}
 
-	err = proto.Unmarshal(resp.Body, cr)
+	err = proto.Unmarshal(resp.Body(), cr)
 	if err != nil {
 		return nil, err
 	}
@@ -75,15 +78,22 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
+	if resp.Payload().IsStream {
+		sc <- struct{}{}
+		return nil, errors.New("streaming response not supported")
+	}
+
 	rr := &centrifugov1.RefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, rr)
+	err = proto.Unmarshal(resp.Body(), rr)
 	if err != nil {
 		return nil, err
 	}
@@ -113,15 +123,22 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
+	if resp.Payload().IsStream {
+		sc <- struct{}{}
+		return nil, errors.New("streaming response not supported")
+	}
+
 	sr := &centrifugov1.SubscribeResponse{}
 
-	err = proto.Unmarshal(resp.Body, sr)
+	err = proto.Unmarshal(resp.Body(), sr)
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +168,22 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
+	if resp.Payload().IsStream {
+		sc <- struct{}{}
+		return nil, errors.New("streaming response not supported")
+	}
+
 	pr := &centrifugov1.PublishResponse{}
 
-	err = proto.Unmarshal(resp.Body, pr)
+	err = proto.Unmarshal(resp.Body(), pr)
 	if err != nil {
 		return nil, err
 	}
@@ -189,15 +213,22 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
+	if resp.Payload().IsStream {
+		sc <- struct{}{}
+		return nil, errors.New("streaming response not supported")
+	}
+
 	rresp := &centrifugov1.RPCResponse{}
 
-	err = proto.Unmarshal(resp.Body, rresp)
+	err = proto.Unmarshal(resp.Body(), rresp)
 	if err != nil {
 		return nil, err
 	}
@@ -228,15 +259,21 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 	}
 
 	p.p.mu.RLock()
-	resp, err := p.p.pool.Exec(ctx, pld)
+	sc := make(chan struct{}, 1)
+	re, err := p.p.pool.Exec(ctx, pld, sc)
 	p.p.mu.RUnlock()
 	if err != nil {
 		return nil, err
 	}
 
+	resp := <-re
+	if resp.Payload().IsStream {
+		sc <- struct{}{}
+		return nil, errors.New("streaming response not supported")
+	}
 	rresp := &centrifugov1.SubRefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, rresp)
+	err = proto.Unmarshal(resp.Body(), rresp)
 	if err != nil {
 		return nil, err
 	}

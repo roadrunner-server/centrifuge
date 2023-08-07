@@ -9,7 +9,7 @@ require (
 	github.com/roadrunner-server/api/v4 v4.6.1
 	github.com/roadrunner-server/errors v1.2.0
 	github.com/roadrunner-server/goridge/v3 v3.6.3
-	github.com/roadrunner-server/sdk/v4 v4.4.0-beta.3
+	github.com/roadrunner-server/sdk/v4 v4.4.0-beta.4
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.25.0
 	google.golang.org/grpc v1.57.0

@@ -14,7 +14,7 @@ import (
 	"github.com/roadrunner-server/sdk/v4/state/process"
 	"github.com/roadrunner-server/sdk/v4/utils"
 	"github.com/roadrunner-server/sdk/v4/worker"
-	centrifugov1 "go.buf.build/grpc/go/roadrunner-server/api/centrifugo/proxy/v1"
+	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )

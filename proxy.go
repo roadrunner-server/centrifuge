@@ -5,9 +5,9 @@ import (
 	"errors"
 
 	"github.com/goccy/go-json"
+	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
 	"github.com/roadrunner-server/sdk/v4/payload"
-	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
@@ -85,15 +85,26 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 		return nil, err
 	}
 
-	resp := <-re
-	if resp.Payload().IsStream {
-		sc <- struct{}{}
-		return nil, errors.New("streaming response not supported")
+	var resp *payload.Payload
+	select {
+	case pl := <-re:
+		if pl.Error() != nil {
+			return nil, pl.Error()
+		}
+		// streaming is not supported
+		if pl.Payload().Flags&frame.STREAM != 0 {
+			return nil, errors.New("streaming response not supported")
+		}
+
+		// assign the payload
+		resp = pl.Payload()
+	default:
+		return nil, errors.New("worker empty response")
 	}
 
 	rr := &centrifugov1.RefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body(), rr)
+	err = proto.Unmarshal(resp.Body, rr)
 	if err != nil {
 		return nil, err
 	}
@@ -130,15 +141,26 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 		return nil, err
 	}
 
-	resp := <-re
-	if resp.Payload().IsStream {
-		sc <- struct{}{}
-		return nil, errors.New("streaming response not supported")
+	var resp *payload.Payload
+	select {
+	case pl := <-re:
+		if pl.Error() != nil {
+			return nil, pl.Error()
+		}
+		// streaming is not supported
+		if pl.Payload().Flags&frame.STREAM != 0 {
+			return nil, errors.New("streaming response not supported")
+		}
+
+		// assign the payload
+		resp = pl.Payload()
+	default:
+		return nil, errors.New("worker empty response")
 	}
 
 	sr := &centrifugov1.SubscribeResponse{}
 
-	err = proto.Unmarshal(resp.Body(), sr)
+	err = proto.Unmarshal(resp.Body, sr)
 	if err != nil {
 		return nil, err
 	}
@@ -175,15 +197,26 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 		return nil, err
 	}
 
-	resp := <-re
-	if resp.Payload().IsStream {
-		sc <- struct{}{}
-		return nil, errors.New("streaming response not supported")
+	var resp *payload.Payload
+	select {
+	case pl := <-re:
+		if pl.Error() != nil {
+			return nil, pl.Error()
+		}
+		// streaming is not supported
+		if pl.Payload().Flags&frame.STREAM != 0 {
+			return nil, errors.New("streaming response not supported")
+		}
+
+		// assign the payload
+		resp = pl.Payload()
+	default:
+		return nil, errors.New("worker empty response")
 	}
 
 	pr := &centrifugov1.PublishResponse{}
 
-	err = proto.Unmarshal(resp.Body(), pr)
+	err = proto.Unmarshal(resp.Body, pr)
 	if err != nil {
 		return nil, err
 	}
@@ -220,15 +253,26 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 		return nil, err
 	}
 
-	resp := <-re
-	if resp.Payload().IsStream {
-		sc <- struct{}{}
-		return nil, errors.New("streaming response not supported")
+	var resp *payload.Payload
+	select {
+	case pl := <-re:
+		if pl.Error() != nil {
+			return nil, pl.Error()
+		}
+		// streaming is not supported
+		if pl.Payload().Flags&frame.STREAM != 0 {
+			return nil, errors.New("streaming response not supported")
+		}
+
+		// assign the payload
+		resp = pl.Payload()
+	default:
+		return nil, errors.New("worker empty response")
 	}
 
 	rresp := &centrifugov1.RPCResponse{}
 
-	err = proto.Unmarshal(resp.Body(), rresp)
+	err = proto.Unmarshal(resp.Body, rresp)
 	if err != nil {
 		return nil, err
 	}
@@ -266,14 +310,26 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 		return nil, err
 	}
 
-	resp := <-re
-	if resp.Payload().IsStream {
-		sc <- struct{}{}
-		return nil, errors.New("streaming response not supported")
+	var resp *payload.Payload
+	select {
+	case pl := <-re:
+		if pl.Error() != nil {
+			return nil, pl.Error()
+		}
+		// streaming is not supported
+		if pl.Payload().Flags&frame.STREAM != 0 {
+			return nil, errors.New("streaming response not supported")
+		}
+
+		// assign the payload
+		resp = pl.Payload()
+	default:
+		return nil, errors.New("worker empty response")
 	}
+
 	rresp := &centrifugov1.SubRefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body(), rresp)
+	err = proto.Unmarshal(resp.Body, rresp)
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,6 @@ package centrifuge
 
 import (
 	"context"
-	"errors"
 
 	"github.com/goccy/go-json"
 	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
@@ -14,11 +13,12 @@ import (
 )
 
 type Proxy struct {
-	p *Plugin
+	log *zap.Logger
+	pw  *wrapper
 }
 
 func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectRequest) (*centrifugov1.ConnectResponse, error) {
-	p.p.log.Debug("got connect proxy request")
+	p.log.Debug("got connect proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -37,18 +37,13 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	resp := <-re
 	cr := &centrifugov1.ConnectResponse{}
-
-	err = proto.Unmarshal(resp.Body(), cr)
+	err = proto.Unmarshal(re.Body, cr)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +52,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 }
 
 func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshRequest) (*centrifugov1.RefreshResponse, error) {
-	p.p.log.Debug("got refresh proxy request")
+	p.log.Debug("got refresh proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -77,34 +72,14 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp *payload.Payload
-	select {
-	case pl := <-re:
-		if pl.Error() != nil {
-			return nil, pl.Error()
-		}
-		// streaming is not supported
-		if pl.Payload().Flags&frame.STREAM != 0 {
-			return nil, errors.New("streaming response not supported")
-		}
-
-		// assign the payload
-		resp = pl.Payload()
-	default:
-		return nil, errors.New("worker empty response")
-	}
-
 	rr := &centrifugov1.RefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, rr)
+	err = proto.Unmarshal(re.Body, rr)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +88,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 }
 
 func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRequest) (*centrifugov1.SubscribeResponse, error) {
-	p.p.log.Debug("got subscribe proxy request")
+	p.log.Debug("got subscribe proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -133,34 +108,14 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp *payload.Payload
-	select {
-	case pl := <-re:
-		if pl.Error() != nil {
-			return nil, pl.Error()
-		}
-		// streaming is not supported
-		if pl.Payload().Flags&frame.STREAM != 0 {
-			return nil, errors.New("streaming response not supported")
-		}
-
-		// assign the payload
-		resp = pl.Payload()
-	default:
-		return nil, errors.New("worker empty response")
-	}
-
 	sr := &centrifugov1.SubscribeResponse{}
 
-	err = proto.Unmarshal(resp.Body, sr)
+	err = proto.Unmarshal(re.Body, sr)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +124,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 }
 
 func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishRequest) (*centrifugov1.PublishResponse, error) {
-	p.p.log.Debug("got publish proxy request")
+	p.log.Debug("got publish proxy request")
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -189,34 +144,14 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp *payload.Payload
-	select {
-	case pl := <-re:
-		if pl.Error() != nil {
-			return nil, pl.Error()
-		}
-		// streaming is not supported
-		if pl.Payload().Flags&frame.STREAM != 0 {
-			return nil, errors.New("streaming response not supported")
-		}
-
-		// assign the payload
-		resp = pl.Payload()
-	default:
-		return nil, errors.New("worker empty response")
-	}
-
 	pr := &centrifugov1.PublishResponse{}
 
-	err = proto.Unmarshal(resp.Body, pr)
+	err = proto.Unmarshal(re.Body, pr)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +160,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 }
 
 func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*centrifugov1.RPCResponse, error) {
-	p.p.log.Debug("got RPC proxy request", zap.String("method", request.Method))
+	p.log.Debug("got RPC proxy request", zap.String("method", request.Method))
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
@@ -245,34 +180,14 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp *payload.Payload
-	select {
-	case pl := <-re:
-		if pl.Error() != nil {
-			return nil, pl.Error()
-		}
-		// streaming is not supported
-		if pl.Payload().Flags&frame.STREAM != 0 {
-			return nil, errors.New("streaming response not supported")
-		}
-
-		// assign the payload
-		resp = pl.Payload()
-	default:
-		return nil, errors.New("worker empty response")
-	}
-
 	rresp := &centrifugov1.RPCResponse{}
 
-	err = proto.Unmarshal(resp.Body, rresp)
+	err = proto.Unmarshal(re.Body, rresp)
 	if err != nil {
 		return nil, err
 	}
@@ -281,7 +196,7 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 }
 
 func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefreshRequest) (*centrifugov1.SubRefreshResponse, error) {
-	p.p.log.Debug("got RPC SubRefresh request", zap.String("channel", request.Channel))
+	p.log.Debug("got RPC SubRefresh request", zap.String("channel", request.Channel))
 
 	data, err := proto.Marshal(request)
 	if err != nil {
@@ -302,34 +217,14 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 		Codec:   frame.CodecProto,
 	}
 
-	p.p.mu.RLock()
-	sc := make(chan struct{}, 1)
-	re, err := p.p.pool.Exec(ctx, pld, sc)
-	p.p.mu.RUnlock()
+	re, err := p.pw.Exec(ctx, pld)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp *payload.Payload
-	select {
-	case pl := <-re:
-		if pl.Error() != nil {
-			return nil, pl.Error()
-		}
-		// streaming is not supported
-		if pl.Payload().Flags&frame.STREAM != 0 {
-			return nil, errors.New("streaming response not supported")
-		}
-
-		// assign the payload
-		resp = pl.Payload()
-	default:
-		return nil, errors.New("worker empty response")
-	}
-
 	rresp := &centrifugov1.SubRefreshResponse{}
 
-	err = proto.Unmarshal(resp.Body, rresp)
+	err = proto.Unmarshal(re.Body, rresp)
 	if err != nil {
 		return nil, err
 	}

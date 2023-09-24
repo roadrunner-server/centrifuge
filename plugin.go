@@ -117,7 +117,10 @@ func (p *Plugin) Serve() chan error {
 	}
 
 	p.mu.Lock()
-	centrifugov1.RegisterCentrifugoProxyServer(p.gRPCServer, &Proxy{p: p})
+	centrifugov1.RegisterCentrifugoProxyServer(p.gRPCServer, &Proxy{
+		log: p.log,
+		pw:  newPoolMuWrapper(p.pool, &p.mu),
+	})
 	p.mu.Unlock()
 
 	go func() {

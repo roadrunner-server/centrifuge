@@ -7,7 +7,7 @@ toolchain go1.21.1
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/goccy/go-json v0.10.2
-	github.com/prometheus/client_golang v1.16.0
+	github.com/prometheus/client_golang v1.17.0
 	github.com/roadrunner-server/api/v4 v4.8.0
 	github.com/roadrunner-server/errors v1.3.0
 	github.com/roadrunner-server/goridge/v3 v3.8.1
@@ -27,7 +27,7 @@ require (
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/prometheus/client_model v0.4.0 // indirect
+	github.com/prometheus/client_model v0.4.1-0.20230718164431-9a2bf3000d16 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/roadrunner-server/tcplisten v1.4.0 // indirect

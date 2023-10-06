@@ -6,11 +6,11 @@ toolchain go1.21.1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.1
-	github.com/roadrunner-server/centrifuge/v4 v4.4.1
-	github.com/roadrunner-server/config/v4 v4.4.5
+	github.com/roadrunner-server/centrifuge/v4 v4.4.2
+	github.com/roadrunner-server/config/v4 v4.4.6
 	github.com/roadrunner-server/endure/v2 v2.4.2
-	github.com/roadrunner-server/rpc/v4 v4.2.4
-	github.com/roadrunner-server/server/v4 v4.4.1
+	github.com/roadrunner-server/rpc/v4 v4.2.5
+	github.com/roadrunner-server/server/v4 v4.4.2
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 )
@@ -63,7 +63,7 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/net v0.16.0 // indirect
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect

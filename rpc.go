@@ -14,139 +14,42 @@ type rpc struct {
 
 /*
 service CentrifugoApi {
-    rpc Publish (PublishRequest) returns (PublishResponse) {}
-    rpc Broadcast (BroadcastRequest) returns (BroadcastResponse) {}
-    rpc Subscribe (SubscribeRequest) returns (SubscribeResponse) {}
-    rpc Unsubscribe (UnsubscribeRequest) returns (UnsubscribeResponse) {}
-    rpc Disconnect (DisconnectRequest) returns (DisconnectResponse) {}
-    rpc Presence (PresenceRequest) returns (PresenceResponse) {}
-    rpc PresenceStats (PresenceStatsRequest) returns (PresenceStatsResponse) {}
-    rpc History (HistoryRequest) returns (HistoryResponse) {}
-    rpc HistoryRemove (HistoryRemoveRequest) returns (HistoryRemoveResponse) {}
-    rpc Info (InfoRequest) returns (InfoResponse) {}
-    rpc RPC (RPCRequest) returns (RPCResponse) {}
-    rpc Refresh (RefreshRequest) returns (RefreshResponse) {}
-    rpc Channels (ChannelsRequest) returns (ChannelsResponse) {}
-    rpc Connections (ConnectionsRequest) returns (ConnectionsResponse) {}
-    rpc UpdateUserStatus (UpdateUserStatusRequest) returns (UpdateUserStatusResponse) {}
-    rpc GetUserStatus (GetUserStatusRequest) returns (GetUserStatusResponse) {}
-    rpc DeleteUserStatus (DeleteUserStatusRequest) returns (DeleteUserStatusResponse) {}
-    rpc BlockUser (BlockUserRequest) returns (BlockUserResponse) {}
-    rpc UnblockUser (UnblockUserRequest) returns (UnblockUserResponse) {}
-    rpc RevokeToken (RevokeTokenRequest) returns (RevokeTokenResponse) {}
-    rpc InvalidateUserTokens (InvalidateUserTokensRequest) returns (InvalidateUserTokensResponse) {}
-}
-
-// added in 2023.1
-service CentrifugoApi {
-  	rpc Batch(BatchRequest) returns (BatchResponse) {}
-  	rpc DeviceRegister(DeviceRegisterRequest) returns (DeviceRegisterResponse) {}
-  	rpc DeviceUpdate(DeviceUpdateRequest) returns (DeviceUpdateResponse) {}
-  	rpc DeviceRemove(DeviceRemoveRequest) returns (DeviceRemoveResponse) {}
-  	rpc DeviceList(DeviceListRequest) returns (DeviceListResponse) {}
-  	rpc PushUserChannelList(PushUserChannelListRequest) returns (PushUserChannelListResponse) {}
-  	rpc PushUserChannelUpdate(PushUserChannelUpdateRequest) returns (PushUserChannelUpdateResponse) {}
-  	rpc SendPushNotification(SendPushNotificationRequest) returns (SendPushNotificationResponse) {}
+  rpc Batch(BatchRequest) returns (BatchResponse) {}
+  rpc Publish(PublishRequest) returns (PublishResponse) {}
+  rpc Broadcast(BroadcastRequest) returns (BroadcastResponse) {}
+  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
+  rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
+  rpc Disconnect(DisconnectRequest) returns (DisconnectResponse) {}
+  rpc Presence(PresenceRequest) returns (PresenceResponse) {}
+  rpc PresenceStats(PresenceStatsRequest) returns (PresenceStatsResponse) {}
+  rpc History(HistoryRequest) returns (HistoryResponse) {}
+  rpc HistoryRemove(HistoryRemoveRequest) returns (HistoryRemoveResponse) {}
+  rpc Info(InfoRequest) returns (InfoResponse) {}
+  rpc RPC(RPCRequest) returns (RPCResponse) {}
+  rpc Refresh(RefreshRequest) returns (RefreshResponse) {}
+  rpc Channels(ChannelsRequest) returns (ChannelsResponse) {}
+  rpc Connections(ConnectionsRequest) returns (ConnectionsResponse) {}
+  rpc UpdateUserStatus(UpdateUserStatusRequest) returns (UpdateUserStatusResponse) {}
+  rpc GetUserStatus(GetUserStatusRequest) returns (GetUserStatusResponse) {}
+  rpc DeleteUserStatus(DeleteUserStatusRequest) returns (DeleteUserStatusResponse) {}
+  rpc BlockUser(BlockUserRequest) returns (BlockUserResponse) {}
+  rpc UnblockUser(UnblockUserRequest) returns (UnblockUserResponse) {}
+  rpc RevokeToken(RevokeTokenRequest) returns (RevokeTokenResponse) {}
+  rpc InvalidateUserTokens(InvalidateUserTokensRequest) returns (InvalidateUserTokensResponse) {}
+  rpc DeviceRegister(DeviceRegisterRequest) returns (DeviceRegisterResponse) {}
+  rpc DeviceUpdate(DeviceUpdateRequest) returns (DeviceUpdateResponse) {}
+  rpc DeviceRemove(DeviceRemoveRequest) returns (DeviceRemoveResponse) {}
+  rpc DeviceList(DeviceListRequest) returns (DeviceListResponse) {}
+  rpc DeviceTopicList(DeviceTopicListRequest) returns (DeviceTopicListResponse) {}
+  rpc DeviceTopicUpdate(DeviceTopicUpdateRequest) returns (DeviceTopicUpdateResponse) {}
+  rpc UserTopicList(UserTopicListRequest) returns (UserTopicListResponse) {}
+  rpc UserTopicUpdate(UserTopicUpdateRequest) returns (UserTopicUpdateResponse) {}
+  rpc SendPushNotification(SendPushNotificationRequest) returns (SendPushNotificationResponse) {}
+  rpc UpdatePushStatus(UpdatePushStatusRequest) returns (UpdatePushStatusResponse) {}
+  rpc CancelPush(CancelPushRequest) returns (CancelPushResponse) {}
+  rpc RateLimit(RateLimitRequest) returns (RateLimitResponse) {}
 }
 */
-
-func (r *rpc) SendPushNotification(in *v1Client.SendPushNotificationRequest, out *v1Client.SendPushNotificationResponse) error {
-	r.log.Debug("got send push notification request")
-
-	resp, err := r.client.client().SendPushNotification(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) PushUserChannelUpdate(in *v1Client.PushUserChannelUpdateRequest, out *v1Client.PushUserChannelUpdateResponse) error {
-	r.log.Debug("got device push user channel update request")
-
-	resp, err := r.client.client().PushUserChannelUpdate(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) PushUserChannelList(in *v1Client.PushUserChannelListRequest, out *v1Client.PushUserChannelListResponse) error {
-	r.log.Debug("got device push user channel list request")
-
-	resp, err := r.client.client().PushUserChannelList(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceListResponse) error {
-	r.log.Debug("got device remove request")
-
-	resp, err := r.client.client().DeviceList(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.DeviceRemoveResponse) error {
-	r.log.Debug("got device remove request")
-
-	resp, err := r.client.client().DeviceRemove(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) DeviceUpdate(in *v1Client.DeviceUpdateRequest, out *v1Client.DeviceUpdateResponse) error {
-	r.log.Debug("got device update request")
-
-	resp, err := r.client.client().DeviceUpdate(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) DeviceRegister(in *v1Client.DeviceRegisterRequest, out *v1Client.DeviceRegisterResponse) error {
-	r.log.Debug("got device register request")
-
-	resp, err := r.client.client().DeviceRegister(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
 
 func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) error {
 	r.log.Debug("got butch request")
@@ -289,6 +192,19 @@ func (r *rpc) Info(in *v1Client.InfoRequest, out *v1Client.InfoResponse) error {
 	return nil
 }
 
+func (r *rpc) RPC(in *v1Client.RPCRequest, out *v1Client.RPCResponse) error {
+	r.log.Debug("got rpc request")
+	resp, err := r.client.client().RPC(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Result = resp.GetResult()
+	out.Error = resp.GetError()
+
+	return nil
+}
+
 func (r *rpc) Refresh(in *v1Client.RefreshRequest, out *v1Client.RefreshResponse) error {
 	r.log.Debug("got refresh request")
 	resp, err := r.client.client().Refresh(context.Background(), in)
@@ -416,5 +332,166 @@ func (r *rpc) InvalidateUserTokens(in *v1Client.InvalidateUserTokensRequest, out
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
 
+	return nil
+}
+
+func (r *rpc) DeviceRegister(in *v1Client.DeviceRegisterRequest, out *v1Client.DeviceRegisterResponse) error {
+	r.log.Debug("got device register request")
+
+	resp, err := r.client.client().DeviceRegister(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceUpdate(in *v1Client.DeviceUpdateRequest, out *v1Client.DeviceUpdateResponse) error {
+	r.log.Debug("got device update request")
+
+	resp, err := r.client.client().DeviceUpdate(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.DeviceRemoveResponse) error {
+	r.log.Debug("got device remove request")
+
+	resp, err := r.client.client().DeviceRemove(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceListResponse) error {
+	r.log.Debug("got device remove request")
+
+	resp, err := r.client.client().DeviceList(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) DeviceTopicList(in *v1Client.DeviceTopicListRequest, out *v1Client.DeviceTopicListResponse) error {
+	r.log.Debug("got device topic list request")
+
+	resp, err := r.client.client().DeviceTopicList(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) DeviceTopicUpdate(in *v1Client.DeviceTopicUpdateRequest, out *v1Client.DeviceTopicUpdateResponse) error {
+	r.log.Debug("got device topic update request")
+
+	resp, err := r.client.client().DeviceTopicUpdate(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) UserTopicList(in *v1Client.UserTopicListRequest, out *v1Client.UserTopicListResponse) error {
+	r.log.Debug("got user topic list request")
+
+	resp, err := r.client.client().UserTopicList(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) UserTopicUpdate(in *v1Client.UserTopicUpdateRequest, out *v1Client.UserTopicUpdateResponse) error {
+	r.log.Debug("got user topic update request")
+
+	resp, err := r.client.client().UserTopicUpdate(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) SendPushNotification(in *v1Client.SendPushNotificationRequest, out *v1Client.SendPushNotificationResponse) error {
+	r.log.Debug("got send push notification request")
+
+	resp, err := r.client.client().SendPushNotification(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+
+	return nil
+}
+
+func (r *rpc) UpdatePushStatus(in *v1Client.UpdatePushStatusRequest, out *v1Client.UpdatePushStatusResponse) error {
+	r.log.Debug("got update push status request")
+
+	resp, err := r.client.client().UpdatePushStatus(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) CancelPush(in *v1Client.CancelPushRequest, out *v1Client.CancelPushResponse) error {
+	r.log.Debug("got cancel push request")
+
+	resp, err := r.client.client().CancelPush(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
+	return nil
+}
+
+func (r *rpc) RateLimit(in *v1Client.RateLimitRequest, out *v1Client.RateLimitResponse) error {
+	r.log.Debug("got rate limit request")
+
+	resp, err := r.client.client().RateLimit(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	out.Error = resp.GetError()
+	out.Result = resp.GetResult()
 	return nil
 }

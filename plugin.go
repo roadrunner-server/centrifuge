@@ -29,12 +29,12 @@ const (
 type Configurer interface {
 	// UnmarshalKey takes a single key and unmarshal it into a Struct.
 	UnmarshalKey(name string, out any) error
-	// Has checks if config section exists.
+	// Has checks if a config section exists.
 	Has(name string) bool
 }
 
 type Pool interface {
-	// Workers returns worker list associated with the pool.
+	// Workers returns workers list associated with the pool.
 	Workers() (workers []*worker.Process)
 	// RemoveWorker removes worker from the pool.
 	RemoveWorker(ctx context.Context) error
@@ -44,7 +44,7 @@ type Pool interface {
 	Exec(ctx context.Context, p *payload.Payload, stopCh chan struct{}) (chan *staticPool.PExec, error)
 	// Reset kill all workers inside the watcher and replaces with new
 	Reset(ctx context.Context) error
-	// Destroy all underlying stack (but let them complete the task).
+	// Destroy underlying stack (but let them complete the task).
 	Destroy(ctx context.Context)
 }
 
@@ -100,11 +100,11 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 func (p *Plugin) Serve() chan error {
 	errCh := make(chan error, 1)
 	const op = errors.Op("centrifuge_serve")
+	p.mu.Lock()
+	defer p.mu.Unlock()
 
 	var err error
-	p.mu.Lock()
 	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{RRMode: RRModeCentrifuge}, nil)
-	p.mu.Unlock()
 	if err != nil {
 		errCh <- err
 		return errCh
@@ -116,12 +116,10 @@ func (p *Plugin) Serve() chan error {
 		return errCh
 	}
 
-	p.mu.Lock()
 	centrifugov1.RegisterCentrifugoProxyServer(p.gRPCServer, &Proxy{
 		log: p.log,
 		pw:  newPoolMuWrapper(p.pool, &p.mu),
 	})
-	p.mu.Unlock()
 
 	go func() {
 		errL := p.gRPCServer.Serve(l)

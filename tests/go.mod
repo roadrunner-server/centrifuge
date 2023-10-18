@@ -6,11 +6,11 @@ toolchain go1.21.1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
-	github.com/roadrunner-server/centrifuge/v4 v4.5.0
-	github.com/roadrunner-server/config/v4 v4.4.6
+	github.com/roadrunner-server/centrifuge/v4 v4.5.1
+	github.com/roadrunner-server/config/v4 v4.4.7
 	github.com/roadrunner-server/endure/v2 v2.4.3
-	github.com/roadrunner-server/rpc/v4 v4.2.5
-	github.com/roadrunner-server/server/v4 v4.4.2
+	github.com/roadrunner-server/rpc/v4 v4.2.6
+	github.com/roadrunner-server/server/v4 v4.4.3
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 )
@@ -34,13 +34,13 @@ require (
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
+	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.17.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
-	github.com/prometheus/common v0.44.0 // indirect
+	github.com/prometheus/common v0.45.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/roadrunner-server/api/v4 v4.9.0 // indirect
 	github.com/roadrunner-server/errors v1.3.0 // indirect
@@ -70,8 +70,8 @@ require (
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231009173412-8bfb1ae86b6c // indirect
-	google.golang.org/grpc v1.58.3 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
+	google.golang.org/grpc v1.59.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

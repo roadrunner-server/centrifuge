@@ -6,11 +6,11 @@ toolchain go1.21.1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
-	github.com/roadrunner-server/centrifuge/v4 v4.5.1
-	github.com/roadrunner-server/config/v4 v4.4.7
+	github.com/roadrunner-server/centrifuge/v4 v4.5.2
+	github.com/roadrunner-server/config/v4 v4.4.8
 	github.com/roadrunner-server/endure/v2 v2.4.3
-	github.com/roadrunner-server/rpc/v4 v4.2.6
-	github.com/roadrunner-server/server/v4 v4.4.3
+	github.com/roadrunner-server/rpc/v4 v4.2.7
+	github.com/roadrunner-server/server/v4 v4.4.4
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 )
@@ -20,10 +20,10 @@ replace github.com/roadrunner-server/centrifuge/v4 => ../
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/centrifugal/protocol v0.10.0 // indirect
+	github.com/centrifugal/protocol v0.11.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect

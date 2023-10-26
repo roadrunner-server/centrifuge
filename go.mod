@@ -11,7 +11,7 @@ require (
 	github.com/roadrunner-server/api/v4 v4.9.0
 	github.com/roadrunner-server/errors v1.3.0
 	github.com/roadrunner-server/goridge/v3 v3.8.1
-	github.com/roadrunner-server/sdk/v4 v4.5.2
+	github.com/roadrunner-server/sdk/v4 v4.5.3
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 	google.golang.org/grpc v1.59.0

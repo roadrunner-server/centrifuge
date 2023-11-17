@@ -6,11 +6,11 @@ toolchain go1.21.1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
-	github.com/roadrunner-server/centrifuge/v4 v4.5.4
-	github.com/roadrunner-server/config/v4 v4.6.1
+	github.com/roadrunner-server/centrifuge/v4 v4.5.5
+	github.com/roadrunner-server/config/v4 v4.6.2
 	github.com/roadrunner-server/endure/v2 v2.4.3
-	github.com/roadrunner-server/rpc/v4 v4.2.9
-	github.com/roadrunner-server/server/v4 v4.5.1
+	github.com/roadrunner-server/rpc/v4 v4.2.10
+	github.com/roadrunner-server/server/v4 v4.5.2
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 )
@@ -30,6 +30,7 @@ require (
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect

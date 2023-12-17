@@ -1,10 +1,13 @@
 package centrifugo
 
 import (
+	"io"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime"
 	"sync"
 	"syscall"
 	"testing"
@@ -16,8 +19,10 @@ import (
 	"github.com/roadrunner-server/centrifuge/v4"
 	"github.com/roadrunner-server/config/v4"
 	"github.com/roadrunner-server/endure/v2"
+	"github.com/roadrunner-server/logger/v4"
 	"github.com/roadrunner-server/rpc/v4"
 	"github.com/roadrunner-server/server/v4"
+	"github.com/roadrunner-server/status/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
@@ -126,4 +131,116 @@ func TestCentrifugoPluginInit(t *testing.T) {
 
 	require.Equal(t, 1, oLogger.FilterMessageSnippet("got connect proxy request").Len())
 	require.Equal(t, 1, oLogger.FilterMessageSnippet("got subscribe proxy request").Len())
+}
+
+func TestCentrifugoStatusChecks(t *testing.T) {
+	cont := endure.New(slog.LevelDebug)
+
+	cfg := &config.Plugin{
+		Version: "2023.3.0",
+		Path:    "configs/.rr-centrifugo-status.yaml",
+		Prefix:  "rr",
+	}
+
+	var cmd *exec.Cmd
+	if runtime.GOOS == "darwin" {
+		cmd = exec.Command("env/centrifugo_mac", "--config", "env/config.json", "--admin")
+	} else {
+		cmd = exec.Command("env/centrifugo", "--config", "env/config.json", "--admin")
+	}
+
+	err := cmd.Start()
+	require.NoError(t, err)
+
+	go func() {
+		_ = cmd.Wait()
+	}()
+
+	err = cont.RegisterAll(
+		cfg,
+		&logger.Plugin{},
+		&status.Plugin{},
+		&centrifuge.Plugin{},
+		&server.Plugin{},
+		&rpc.Plugin{},
+	)
+	assert.NoError(t, err)
+
+	time.Sleep(time.Second)
+	err = cont.Init()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ch, err := cont.Serve()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	stopCh := make(chan struct{}, 1)
+
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case e := <-ch:
+				assert.Fail(t, "error", e.Error.Error())
+				err = cont.Stop()
+				if err != nil {
+					assert.FailNow(t, "error", err.Error())
+				}
+			case <-sig:
+				err = cont.Stop()
+				if err != nil {
+					assert.FailNow(t, "error", err.Error())
+				}
+				return
+			case <-stopCh:
+				// timeout
+				err = cont.Stop()
+				if err != nil {
+					assert.FailNow(t, "error", err.Error())
+				}
+				return
+			}
+		}
+	}()
+
+	time.Sleep(time.Second * 2)
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
+	req, err := http.NewRequest("GET", "http://127.0.0.1:35544/health?plugin=centrifuge", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	body, _ := io.ReadAll(resp.Body)
+	assert.Equal(t, "plugin: centrifuge, status: 200\n", string(body))
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	_ = resp.Body.Close()
+
+	req, err = http.NewRequest("GET", "http://127.0.0.1:35544/ready?plugin=centrifuge", nil)
+	require.NoError(t, err)
+
+	resp, err = client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	body, _ = io.ReadAll(resp.Body)
+	assert.Equal(t, "plugin: centrifuge, status: 200\n", string(body))
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	_ = resp.Body.Close()
+
+	time.Sleep(time.Second)
+	stopCh <- struct{}{}
+	wg.Wait()
 }

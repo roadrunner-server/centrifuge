@@ -16,4 +16,5 @@
 vendor/
 .idea
 .vale.ini
+.DS_Store
 .vale-styles

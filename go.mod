@@ -18,6 +18,11 @@ require (
 	google.golang.org/protobuf v1.31.0
 )
 
+exclude (
+	github.com/spf13/viper v1.18.0
+	github.com/spf13/viper v1.18.1
+)
+
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

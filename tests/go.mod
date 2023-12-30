@@ -6,13 +6,13 @@ toolchain go1.22rc1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
-	github.com/roadrunner-server/centrifuge/v4 v4.6.0
-	github.com/roadrunner-server/config/v4 v4.6.4
+	github.com/roadrunner-server/centrifuge/v4 v4.6.1
+	github.com/roadrunner-server/config/v4 v4.6.5
 	github.com/roadrunner-server/endure/v2 v2.4.3
-	github.com/roadrunner-server/logger/v4 v4.2.11
-	github.com/roadrunner-server/rpc/v4 v4.2.12
-	github.com/roadrunner-server/server/v4 v4.5.4
-	github.com/roadrunner-server/status/v4 v4.4.10
+	github.com/roadrunner-server/logger/v4 v4.2.12
+	github.com/roadrunner-server/rpc/v4 v4.2.13
+	github.com/roadrunner-server/server/v4 v4.5.5
+	github.com/roadrunner-server/status/v4 v4.4.11
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 )
@@ -44,7 +44,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.17.0 // indirect
+	github.com/prometheus/client_golang v1.18.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.45.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect

@@ -1,8 +1,8 @@
 module github.com/roadrunner-server/centrifuge/v4
 
-go 1.21
+go 1.22
 
-toolchain go1.21.1
+toolchain go1.22.0
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1
@@ -44,7 +44,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240205150955-31a09d347014 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

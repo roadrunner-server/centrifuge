@@ -4,6 +4,7 @@ import (
 	"context"
 
 	v1Client "github.com/roadrunner-server/api/v4/build/centrifugo/api/v1"
+	"github.com/roadrunner-server/errors"
 	"go.uber.org/zap"
 )
 
@@ -54,7 +55,12 @@ service CentrifugoApi {
 func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) error {
 	r.log.Debug("got butch request")
 
-	resp, err := r.client.client().Batch(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+
+	resp, err := client.Batch(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -65,7 +71,13 @@ func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) erro
 
 func (r *rpc) Publish(in *v1Client.PublishRequest, out *v1Client.PublishResponse) error {
 	r.log.Debug("got publish request")
-	resp, err := r.client.client().Publish(context.Background(), in)
+
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+
+	resp, err := client.Publish(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -78,7 +90,11 @@ func (r *rpc) Publish(in *v1Client.PublishRequest, out *v1Client.PublishResponse
 
 func (r *rpc) Broadcast(in *v1Client.BroadcastRequest, out *v1Client.BroadcastResponse) error {
 	r.log.Debug("got broadcast request")
-	resp, err := r.client.client().Broadcast(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Broadcast(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -91,7 +107,11 @@ func (r *rpc) Broadcast(in *v1Client.BroadcastRequest, out *v1Client.BroadcastRe
 
 func (r *rpc) Subscribe(in *v1Client.SubscribeRequest, out *v1Client.SubscribeResponse) error {
 	r.log.Debug("got subscribe request")
-	resp, err := r.client.client().Subscribe(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Subscribe(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -104,7 +124,11 @@ func (r *rpc) Subscribe(in *v1Client.SubscribeRequest, out *v1Client.SubscribeRe
 
 func (r *rpc) Unsubscribe(in *v1Client.UnsubscribeRequest, out *v1Client.UnsubscribeResponse) error {
 	r.log.Debug("got unsubscribe request")
-	resp, err := r.client.client().Unsubscribe(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Unsubscribe(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -117,7 +141,11 @@ func (r *rpc) Unsubscribe(in *v1Client.UnsubscribeRequest, out *v1Client.Unsubsc
 
 func (r *rpc) Disconnect(in *v1Client.DisconnectRequest, out *v1Client.DisconnectResponse) error {
 	r.log.Debug("got disconnect request")
-	resp, err := r.client.client().Disconnect(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Disconnect(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -129,7 +157,11 @@ func (r *rpc) Disconnect(in *v1Client.DisconnectRequest, out *v1Client.Disconnec
 }
 func (r *rpc) Presence(in *v1Client.PresenceRequest, out *v1Client.PresenceResponse) error {
 	r.log.Debug("got presence request")
-	resp, err := r.client.client().Presence(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Presence(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -142,7 +174,11 @@ func (r *rpc) Presence(in *v1Client.PresenceRequest, out *v1Client.PresenceRespo
 
 func (r *rpc) PresenceStats(in *v1Client.PresenceStatsRequest, out *v1Client.PresenceStatsResponse) error {
 	r.log.Debug("got presence_stats request")
-	resp, err := r.client.client().PresenceStats(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.PresenceStats(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -155,7 +191,11 @@ func (r *rpc) PresenceStats(in *v1Client.PresenceStatsRequest, out *v1Client.Pre
 
 func (r *rpc) History(in *v1Client.HistoryRequest, out *v1Client.HistoryResponse) error {
 	r.log.Debug("got history request")
-	resp, err := r.client.client().History(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.History(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -168,7 +208,11 @@ func (r *rpc) History(in *v1Client.HistoryRequest, out *v1Client.HistoryResponse
 
 func (r *rpc) HistoryRemove(in *v1Client.HistoryRemoveRequest, out *v1Client.HistoryRemoveResponse) error {
 	r.log.Debug("got history_remove request")
-	resp, err := r.client.client().HistoryRemove(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.HistoryRemove(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -181,7 +225,11 @@ func (r *rpc) HistoryRemove(in *v1Client.HistoryRemoveRequest, out *v1Client.His
 
 func (r *rpc) Info(in *v1Client.InfoRequest, out *v1Client.InfoResponse) error {
 	r.log.Debug("got info request")
-	resp, err := r.client.client().Info(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Info(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -194,7 +242,11 @@ func (r *rpc) Info(in *v1Client.InfoRequest, out *v1Client.InfoResponse) error {
 
 func (r *rpc) RPC(in *v1Client.RPCRequest, out *v1Client.RPCResponse) error {
 	r.log.Debug("got rpc request")
-	resp, err := r.client.client().RPC(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.RPC(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -207,7 +259,11 @@ func (r *rpc) RPC(in *v1Client.RPCRequest, out *v1Client.RPCResponse) error {
 
 func (r *rpc) Refresh(in *v1Client.RefreshRequest, out *v1Client.RefreshResponse) error {
 	r.log.Debug("got refresh request")
-	resp, err := r.client.client().Refresh(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Refresh(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -220,7 +276,11 @@ func (r *rpc) Refresh(in *v1Client.RefreshRequest, out *v1Client.RefreshResponse
 
 func (r *rpc) Channels(in *v1Client.ChannelsRequest, out *v1Client.ChannelsResponse) error {
 	r.log.Debug("got channels request")
-	resp, err := r.client.client().Channels(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Channels(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -233,7 +293,11 @@ func (r *rpc) Channels(in *v1Client.ChannelsRequest, out *v1Client.ChannelsRespo
 
 func (r *rpc) Connections(in *v1Client.ConnectionsRequest, out *v1Client.ConnectionsResponse) error {
 	r.log.Debug("got connections request")
-	resp, err := r.client.client().Connections(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.Connections(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -246,7 +310,11 @@ func (r *rpc) Connections(in *v1Client.ConnectionsRequest, out *v1Client.Connect
 
 func (r *rpc) UpdateUserStatus(in *v1Client.UpdateUserStatusRequest, out *v1Client.UpdateUserStatusResponse) error {
 	r.log.Debug("got update_user_status request")
-	resp, err := r.client.client().UpdateUserStatus(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.UpdateUserStatus(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -259,7 +327,11 @@ func (r *rpc) UpdateUserStatus(in *v1Client.UpdateUserStatusRequest, out *v1Clie
 
 func (r *rpc) GetUserStatus(in *v1Client.GetUserStatusRequest, out *v1Client.GetUserStatusResponse) error {
 	r.log.Debug("got get_user_status request")
-	resp, err := r.client.client().GetUserStatus(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.GetUserStatus(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -272,7 +344,11 @@ func (r *rpc) GetUserStatus(in *v1Client.GetUserStatusRequest, out *v1Client.Get
 
 func (r *rpc) DeleteUserStatus(in *v1Client.DeleteUserStatusRequest, out *v1Client.DeleteUserStatusResponse) error {
 	r.log.Debug("got delete_user_status request")
-	resp, err := r.client.client().DeleteUserStatus(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeleteUserStatus(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -285,7 +361,11 @@ func (r *rpc) DeleteUserStatus(in *v1Client.DeleteUserStatusRequest, out *v1Clie
 
 func (r *rpc) BlockUser(in *v1Client.BlockUserRequest, out *v1Client.BlockUserResponse) error {
 	r.log.Debug("got block_user request")
-	resp, err := r.client.client().BlockUser(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.BlockUser(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -298,7 +378,11 @@ func (r *rpc) BlockUser(in *v1Client.BlockUserRequest, out *v1Client.BlockUserRe
 
 func (r *rpc) UnblockUser(in *v1Client.UnblockUserRequest, out *v1Client.UnblockUserResponse) error {
 	r.log.Debug("got unblock_user request")
-	resp, err := r.client.client().UnblockUser(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.UnblockUser(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -311,7 +395,11 @@ func (r *rpc) UnblockUser(in *v1Client.UnblockUserRequest, out *v1Client.Unblock
 
 func (r *rpc) RevokeToken(in *v1Client.RevokeTokenRequest, out *v1Client.RevokeTokenResponse) error {
 	r.log.Debug("got revoke_token request")
-	resp, err := r.client.client().RevokeToken(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.RevokeToken(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -324,7 +412,11 @@ func (r *rpc) RevokeToken(in *v1Client.RevokeTokenRequest, out *v1Client.RevokeT
 
 func (r *rpc) InvalidateUserTokens(in *v1Client.InvalidateUserTokensRequest, out *v1Client.InvalidateUserTokensResponse) error {
 	r.log.Debug("got invalidate_user_tokens request")
-	resp, err := r.client.client().InvalidateUserTokens(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.InvalidateUserTokens(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -338,7 +430,11 @@ func (r *rpc) InvalidateUserTokens(in *v1Client.InvalidateUserTokensRequest, out
 func (r *rpc) DeviceRegister(in *v1Client.DeviceRegisterRequest, out *v1Client.DeviceRegisterResponse) error {
 	r.log.Debug("got device register request")
 
-	resp, err := r.client.client().DeviceRegister(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceRegister(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -352,7 +448,11 @@ func (r *rpc) DeviceRegister(in *v1Client.DeviceRegisterRequest, out *v1Client.D
 func (r *rpc) DeviceUpdate(in *v1Client.DeviceUpdateRequest, out *v1Client.DeviceUpdateResponse) error {
 	r.log.Debug("got device update request")
 
-	resp, err := r.client.client().DeviceUpdate(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceUpdate(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -366,7 +466,11 @@ func (r *rpc) DeviceUpdate(in *v1Client.DeviceUpdateRequest, out *v1Client.Devic
 func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.DeviceRemoveResponse) error {
 	r.log.Debug("got device remove request")
 
-	resp, err := r.client.client().DeviceRemove(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceRemove(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -380,7 +484,11 @@ func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.Devic
 func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceListResponse) error {
 	r.log.Debug("got device remove request")
 
-	resp, err := r.client.client().DeviceList(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceList(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -394,7 +502,11 @@ func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceLis
 func (r *rpc) DeviceTopicList(in *v1Client.DeviceTopicListRequest, out *v1Client.DeviceTopicListResponse) error {
 	r.log.Debug("got device topic list request")
 
-	resp, err := r.client.client().DeviceTopicList(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceTopicList(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -407,7 +519,11 @@ func (r *rpc) DeviceTopicList(in *v1Client.DeviceTopicListRequest, out *v1Client
 func (r *rpc) DeviceTopicUpdate(in *v1Client.DeviceTopicUpdateRequest, out *v1Client.DeviceTopicUpdateResponse) error {
 	r.log.Debug("got device topic update request")
 
-	resp, err := r.client.client().DeviceTopicUpdate(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.DeviceTopicUpdate(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -420,7 +536,11 @@ func (r *rpc) DeviceTopicUpdate(in *v1Client.DeviceTopicUpdateRequest, out *v1Cl
 func (r *rpc) UserTopicList(in *v1Client.UserTopicListRequest, out *v1Client.UserTopicListResponse) error {
 	r.log.Debug("got user topic list request")
 
-	resp, err := r.client.client().UserTopicList(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.UserTopicList(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -433,7 +553,11 @@ func (r *rpc) UserTopicList(in *v1Client.UserTopicListRequest, out *v1Client.Use
 func (r *rpc) UserTopicUpdate(in *v1Client.UserTopicUpdateRequest, out *v1Client.UserTopicUpdateResponse) error {
 	r.log.Debug("got user topic update request")
 
-	resp, err := r.client.client().UserTopicUpdate(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.UserTopicUpdate(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -446,7 +570,11 @@ func (r *rpc) UserTopicUpdate(in *v1Client.UserTopicUpdateRequest, out *v1Client
 func (r *rpc) SendPushNotification(in *v1Client.SendPushNotificationRequest, out *v1Client.SendPushNotificationResponse) error {
 	r.log.Debug("got send push notification request")
 
-	resp, err := r.client.client().SendPushNotification(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.SendPushNotification(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -460,7 +588,11 @@ func (r *rpc) SendPushNotification(in *v1Client.SendPushNotificationRequest, out
 func (r *rpc) UpdatePushStatus(in *v1Client.UpdatePushStatusRequest, out *v1Client.UpdatePushStatusResponse) error {
 	r.log.Debug("got update push status request")
 
-	resp, err := r.client.client().UpdatePushStatus(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.UpdatePushStatus(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -473,7 +605,11 @@ func (r *rpc) UpdatePushStatus(in *v1Client.UpdatePushStatusRequest, out *v1Clie
 func (r *rpc) CancelPush(in *v1Client.CancelPushRequest, out *v1Client.CancelPushResponse) error {
 	r.log.Debug("got cancel push request")
 
-	resp, err := r.client.client().CancelPush(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.CancelPush(context.Background(), in)
 	if err != nil {
 		return err
 	}
@@ -486,7 +622,11 @@ func (r *rpc) CancelPush(in *v1Client.CancelPushRequest, out *v1Client.CancelPus
 func (r *rpc) RateLimit(in *v1Client.RateLimitRequest, out *v1Client.RateLimitResponse) error {
 	r.log.Debug("got rate limit request")
 
-	resp, err := r.client.client().RateLimit(context.Background(), in)
+	client := r.client.client()
+	if client == nil {
+		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
+	}
+	resp, err := client.RateLimit(context.Background(), in)
 	if err != nil {
 		return err
 	}

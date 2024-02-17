@@ -1,1 +1,1 @@
-# Docs: [link](https://roadrunner.dev/docs/plugins-centrifuge/current/en)
+# Docs: [link](https://docs.roadrunner.dev/plugins/centrifuge)

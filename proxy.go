@@ -5,6 +5,7 @@ import (
 
 	"github.com/goccy/go-json"
 	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
+	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
 	"github.com/roadrunner-server/sdk/v4/payload"
 	"go.uber.org/zap"
@@ -230,4 +231,53 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 	}
 
 	return rresp, nil
+}
+
+func (p *Proxy) NotifyChannelState(ctx context.Context, request *centrifugov1.NotifyChannelStateRequest) (*centrifugov1.NotifyChannelStateResponse, error) {
+	p.log.Debug("got NotifyChannelState request")
+
+	data, err := proto.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "notifychannelstate")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
+	pld := &payload.Payload{
+		Context: meta,
+		Body:    data,
+		Codec:   frame.CodecProto,
+	}
+
+	re, err := p.pw.Exec(ctx, pld)
+	if err != nil {
+		return nil, err
+	}
+
+	rresp := &centrifugov1.NotifyChannelStateResponse{}
+
+	err = proto.Unmarshal(re.Body, rresp)
+	if err != nil {
+		return nil, err
+	}
+
+	return rresp, nil
+}
+
+func (p *Proxy) SubscribeUnidirectional(request *centrifugov1.SubscribeRequest, server centrifugov1.CentrifugoProxy_SubscribeUnidirectionalServer) error {
+	p.log.Debug("got SubscribeUnidirectional request")
+
+	return errors.Str("not supported")
+}
+
+func (p *Proxy) SubscribeBidirectional(request centrifugov1.CentrifugoProxy_SubscribeBidirectionalServer) error {
+	p.log.Debug("got StreamSubRequest request")
+
+	return errors.Str("not supported")
 }

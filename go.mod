@@ -3,7 +3,7 @@ module github.com/roadrunner-server/centrifuge/v4
 go 1.22.0
 
 require (
-	github.com/cenkalti/backoff/v4 v4.2.1
+	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/goccy/go-json v0.10.2
 	github.com/prometheus/client_golang v1.19.0
 	github.com/roadrunner-server/api/v4 v4.11.1

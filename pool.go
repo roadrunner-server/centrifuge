@@ -34,6 +34,7 @@ func (p *wrapper) Exec(ctx context.Context, pld *payload.Payload) (*payload.Payl
 	p.mu.RUnlock()
 	if err != nil {
 		p.putStopCh(sc)
+
 		return nil, err
 	}
 
@@ -42,12 +43,14 @@ func (p *wrapper) Exec(ctx context.Context, pld *payload.Payload) (*payload.Payl
 	case pl := <-re:
 		if pl.Error() != nil {
 			p.putStopCh(sc)
+
 			return nil, pl.Error()
 		}
 		// streaming is not supported
 		if pl.Payload().Flags&frame.STREAM != 0 {
 			// stop the stream, do not return the channel
 			sc <- struct{}{}
+
 			return nil, errors.New("streaming response not supported")
 		}
 
@@ -55,10 +58,12 @@ func (p *wrapper) Exec(ctx context.Context, pld *payload.Payload) (*payload.Payl
 		resp = pl.Payload()
 	default:
 		p.putStopCh(sc)
+
 		return nil, errors.New("worker empty response")
 	}
 
 	p.putStopCh(sc)
+
 	return resp, nil
 }
 

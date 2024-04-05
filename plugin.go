@@ -91,7 +91,7 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 	p.log = log.NamedLogger(name)
 	p.server = server
 	p.gRPCServer = grpc.NewServer()
-	p.client = newClient(p.cfg.GrpcApiAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
+	p.client = newClient(p.cfg.GrpcAPIAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
 	p.statsExporter = newWorkersExporter(p)
 
 	return nil
@@ -99,20 +99,25 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 
 func (p *Plugin) Serve() chan error {
 	errCh := make(chan error, 1)
+
 	const op = errors.Op("centrifuge_serve")
+
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	var err error
 	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{RRMode: RRModeCentrifuge}, nil)
+
 	if err != nil {
 		errCh <- err
+
 		return errCh
 	}
 
 	l, err := utils.CreateListener(p.cfg.ProxyAddress)
 	if err != nil {
 		errCh <- errors.E(op, err)
+
 		return errCh
 	}
 
@@ -126,6 +131,7 @@ func (p *Plugin) Serve() chan error {
 		if errL != nil {
 			if stderr.Is(errL, grpc.ErrServerStopped) {
 				p.log.Info("grpc proxy stopped")
+
 				return
 			}
 
@@ -136,6 +142,7 @@ func (p *Plugin) Serve() chan error {
 	err = p.client.connect()
 	if err != nil {
 		errCh <- err
+
 		return errCh
 	}
 
@@ -170,11 +177,13 @@ func (p *Plugin) Workers() []*process.State {
 	}
 
 	ps := make([]*process.State, 0, len(workers))
+
 	for i := 0; i < len(workers); i++ {
 		state, err := process.WorkerProcessState(workers[i])
 		if err != nil {
 			return nil
 		}
+
 		ps = append(ps, state)
 	}
 
@@ -189,8 +198,10 @@ func (p *Plugin) Reset() error {
 
 	ctxTout, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
+
 	if p.pool == nil {
 		p.log.Info("pool is nil, nothing to reset")
+
 		return nil
 	}
 
@@ -200,6 +211,7 @@ func (p *Plugin) Reset() error {
 	}
 
 	p.log.Info("plugin was successfully reset")
+
 	return nil
 }
 
@@ -219,5 +231,6 @@ func (p *Plugin) workers() []*worker.Process {
 	if p == nil || p.pool == nil {
 		return nil
 	}
+
 	return p.pool.Workers()
 }

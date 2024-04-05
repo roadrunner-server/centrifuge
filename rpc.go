@@ -66,6 +66,7 @@ func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) erro
 	}
 
 	out.Replies = resp.GetReplies()
+
 	return nil
 }
 
@@ -513,6 +514,7 @@ func (r *rpc) DeviceTopicList(in *v1Client.DeviceTopicListRequest, out *v1Client
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -530,6 +532,7 @@ func (r *rpc) DeviceTopicUpdate(in *v1Client.DeviceTopicUpdateRequest, out *v1Cl
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -547,6 +550,7 @@ func (r *rpc) UserTopicList(in *v1Client.UserTopicListRequest, out *v1Client.Use
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -564,6 +568,7 @@ func (r *rpc) UserTopicUpdate(in *v1Client.UserTopicUpdateRequest, out *v1Client
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -599,6 +604,7 @@ func (r *rpc) UpdatePushStatus(in *v1Client.UpdatePushStatusRequest, out *v1Clie
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -616,6 +622,7 @@ func (r *rpc) CancelPush(in *v1Client.CancelPushRequest, out *v1Client.CancelPus
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }
 
@@ -633,5 +640,6 @@ func (r *rpc) RateLimit(in *v1Client.RateLimitRequest, out *v1Client.RateLimitRe
 
 	out.Error = resp.GetError()
 	out.Result = resp.GetResult()
+
 	return nil
 }

@@ -64,24 +64,28 @@ func (c *client) connect() error {
 				MinVersion:   tls.VersionTLS12,
 			}
 
-			conn, err := grpc.Dial(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(credentials.NewTLS(tlscfg)))
+			conn, err := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(credentials.NewTLS(tlscfg)))
 			if err != nil {
 				c.log.Debug("attempted to connect to the centrifugo server with TLS, retrying", zap.Error(err))
+
 				return err
 			}
 
 			c.centrifugoClient = v1Client.NewCentrifugoApiClient(conn)
+
 			return nil
 		}
 
 		// non-tls
-		conn, err := grpc.Dial(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			c.log.Debug("attempted to connect to the centrifugo server, retrying", zap.Error(err))
+
 			return err
 		}
 
 		c.centrifugoClient = v1Client.NewCentrifugoApiClient(conn)
+
 		return nil
 	}
 

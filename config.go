@@ -11,7 +11,7 @@ type Config struct {
 	// host + port
 	ProxyAddress string `mapstructure:"proxy_address"`
 	// host + port
-	GrpcApiAddress string `mapstructure:"grpc_api_address"`
+	GrpcAPIAddress string `mapstructure:"grpc_api_address"`
 	UseCompressor  bool   `mapstructure:"use_compressor"`
 	Version        string `mapstructure:"version"`
 	Name           string `mapstructure:"name"`
@@ -28,12 +28,12 @@ type TLS struct {
 func (c *Config) InitDefaults() error {
 	const op = errors.Op("centrifuge_init_defaults")
 
-	if c.GrpcApiAddress == "" {
-		c.GrpcApiAddress = "127.0.0.1:10000"
+	if c.GrpcAPIAddress == "" {
+		c.GrpcAPIAddress = "127.0.0.1:10000"
 	}
 
-	if len(c.GrpcApiAddress) > 7 && c.GrpcApiAddress[0:6] == "tcp://" {
-		c.GrpcApiAddress = c.GrpcApiAddress[6:]
+	if len(c.GrpcAPIAddress) > 7 && c.GrpcAPIAddress[0:6] == "tcp://" {
+		c.GrpcAPIAddress = c.GrpcAPIAddress[6:]
 	}
 
 	if c.ProxyAddress == "" {
@@ -53,7 +53,7 @@ func (c *Config) InitDefaults() error {
 		c.Pool.InitDefaults()
 	}
 
-	if c.TLS != nil {
+	if c.TLS != nil { //nolint:nestif
 		if _, err := os.Stat(c.TLS.Key); err != nil {
 			if os.IsNotExist(err) {
 				return errors.E(op, errors.Errorf("key file '%s' does not exists", c.TLS.Key))

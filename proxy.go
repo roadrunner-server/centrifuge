@@ -45,6 +45,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 
 	cr := &centrifugov1.ConnectResponse{}
 	err = proto.Unmarshal(re.Body, cr)
+
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +56,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshRequest) (*centrifugov1.RefreshResponse, error) {
 	p.log.Debug("got refresh proxy request")
 	data, err := proto.Marshal(request)
+
 	if err != nil {
 		return nil, err
 	}
@@ -91,6 +93,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRequest) (*centrifugov1.SubscribeResponse, error) {
 	p.log.Debug("got subscribe proxy request")
 	data, err := proto.Marshal(request)
+
 	if err != nil {
 		return nil, err
 	}
@@ -127,6 +130,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishRequest) (*centrifugov1.PublishResponse, error) {
 	p.log.Debug("got publish proxy request")
 	data, err := proto.Marshal(request)
+
 	if err != nil {
 		return nil, err
 	}
@@ -163,6 +167,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*centrifugov1.RPCResponse, error) {
 	p.log.Debug("got RPC proxy request", zap.String("method", request.Method))
 	data, err := proto.Marshal(request)
+
 	if err != nil {
 		return nil, err
 	}
@@ -270,13 +275,13 @@ func (p *Proxy) NotifyChannelState(ctx context.Context, request *centrifugov1.No
 	return rresp, nil
 }
 
-func (p *Proxy) SubscribeUnidirectional(request *centrifugov1.SubscribeRequest, server centrifugov1.CentrifugoProxy_SubscribeUnidirectionalServer) error {
+func (p *Proxy) SubscribeUnidirectional(_ *centrifugov1.SubscribeRequest, _ centrifugov1.CentrifugoProxy_SubscribeUnidirectionalServer) error {
 	p.log.Debug("got SubscribeUnidirectional request")
 
 	return errors.Str("not supported")
 }
 
-func (p *Proxy) SubscribeBidirectional(request centrifugov1.CentrifugoProxy_SubscribeBidirectionalServer) error {
+func (p *Proxy) SubscribeBidirectional(_ centrifugov1.CentrifugoProxy_SubscribeBidirectionalServer) error {
 	p.log.Debug("got StreamSubRequest request")
 
 	return errors.Str("not supported")

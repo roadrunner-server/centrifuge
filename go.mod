@@ -1,6 +1,6 @@
 module github.com/roadrunner-server/centrifuge/v4
 
-go 1.22.1
+go 1.22.2
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
@@ -12,7 +12,7 @@ require (
 	github.com/roadrunner-server/sdk/v4 v4.6.0
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
-	google.golang.org/grpc v1.63.0
+	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.33.0
 )
 

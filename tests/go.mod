@@ -5,12 +5,12 @@ go 1.22.3
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v4 v4.7.1
-	github.com/roadrunner-server/config/v4 v4.8.1
+	github.com/roadrunner-server/config/v4 v4.8.2
 	github.com/roadrunner-server/endure/v2 v2.4.4
-	github.com/roadrunner-server/logger/v4 v4.4.1
-	github.com/roadrunner-server/rpc/v4 v4.4.1
-	github.com/roadrunner-server/server/v4 v4.8.1
-	github.com/roadrunner-server/status/v4 v4.6.1
+	github.com/roadrunner-server/logger/v4 v4.4.2
+	github.com/roadrunner-server/rpc/v4 v4.4.2
+	github.com/roadrunner-server/server/v4 v4.8.2
+	github.com/roadrunner-server/status/v4 v4.6.2
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 )

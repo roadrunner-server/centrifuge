@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v4 v4.7.1
-	github.com/roadrunner-server/config/v4 v4.8.2
+	github.com/roadrunner-server/config/v4 v4.9.0
 	github.com/roadrunner-server/endure/v2 v2.4.4
 	github.com/roadrunner-server/logger/v4 v4.4.2
 	github.com/roadrunner-server/rpc/v4 v4.4.2
@@ -43,14 +43,14 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.19.1 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.53.0 // indirect
+	github.com/prometheus/common v0.54.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/roadrunner-server/api/v4 v4.12.0 // indirect
 	github.com/roadrunner-server/errors v1.4.0 // indirect
 	github.com/roadrunner-server/goridge/v3 v3.8.2 // indirect
 	github.com/roadrunner-server/sdk/v4 v4.7.2 // indirect
 	github.com/roadrunner-server/tcplisten v1.4.0 // indirect
-	github.com/sagikazarmark/locafero v0.4.0 // indirect
+	github.com/sagikazarmark/locafero v0.5.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/segmentio/encoding v0.4.0 // indirect
@@ -59,7 +59,7 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.18.2 // indirect
+	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.14 // indirect
 	github.com/tklauser/numcpus v0.8.0 // indirect

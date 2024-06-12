@@ -5,12 +5,12 @@ go 1.22.4
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v4 v4.7.1
-	github.com/roadrunner-server/config/v4 v4.9.0
+	github.com/roadrunner-server/config/v4 v4.9.1
 	github.com/roadrunner-server/endure/v2 v2.4.5
-	github.com/roadrunner-server/logger/v4 v4.4.2
-	github.com/roadrunner-server/rpc/v4 v4.4.2
-	github.com/roadrunner-server/server/v4 v4.8.2
-	github.com/roadrunner-server/status/v4 v4.6.2
+	github.com/roadrunner-server/logger/v4 v4.4.3
+	github.com/roadrunner-server/rpc/v4 v4.4.3
+	github.com/roadrunner-server/server/v4 v4.8.3
+	github.com/roadrunner-server/status/v4 v4.6.3
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 )
@@ -28,7 +28,7 @@ require (
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.1 // indirect
+	github.com/gorilla/websocket v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -73,9 +73,9 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240610135401-a8a62080eff3 // indirect
 	google.golang.org/grpc v1.64.0 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
+	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

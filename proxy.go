@@ -7,7 +7,7 @@ import (
 	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/goridge/v3/pkg/frame"
-	"github.com/roadrunner-server/sdk/v4/payload"
+	"github.com/roadrunner-server/pool/payload"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"

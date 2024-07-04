@@ -8,13 +8,12 @@ import (
 
 	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
-	"github.com/roadrunner-server/sdk/v4/metrics"
-	"github.com/roadrunner-server/sdk/v4/payload"
-	"github.com/roadrunner-server/sdk/v4/pool"
-	staticPool "github.com/roadrunner-server/sdk/v4/pool/static_pool"
-	"github.com/roadrunner-server/sdk/v4/state/process"
-	"github.com/roadrunner-server/sdk/v4/utils"
-	"github.com/roadrunner-server/sdk/v4/worker"
+	"github.com/roadrunner-server/pool/payload"
+	"github.com/roadrunner-server/pool/pool"
+	staticPool "github.com/roadrunner-server/pool/pool/static_pool"
+	"github.com/roadrunner-server/pool/state/process"
+	"github.com/roadrunner-server/pool/worker"
+	"github.com/roadrunner-server/tcplisten"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -34,7 +33,7 @@ type Configurer interface {
 }
 
 type Pool interface {
-	// Workers returns workers list associated with the pool.
+	// Workers return workers' list associated with the pool.
 	Workers() (workers []*worker.Process)
 	// RemoveWorker removes worker from the pool.
 	RemoveWorker(ctx context.Context) error
@@ -42,9 +41,9 @@ type Pool interface {
 	AddWorker() error
 	// Exec payload
 	Exec(ctx context.Context, p *payload.Payload, stopCh chan struct{}) (chan *staticPool.PExec, error)
-	// Reset kill all workers inside the watcher and replaces with new
+	// Reset kills all workers inside the watcher and replaces with new
 	Reset(ctx context.Context) error
-	// Destroy underlying stack (but let them complete the task).
+	// Destroy the underlying stack (but let them complete the task).
 	Destroy(ctx context.Context)
 }
 
@@ -67,7 +66,7 @@ type Plugin struct {
 	// proxy server
 	gRPCServer    *grpc.Server
 	client        *client
-	statsExporter *metrics.StatsExporter
+	statsExporter *StatsExporter
 
 	pool Pool
 }
@@ -114,7 +113,7 @@ func (p *Plugin) Serve() chan error {
 		return errCh
 	}
 
-	l, err := utils.CreateListener(p.cfg.ProxyAddress)
+	l, err := tcplisten.CreateListener(p.cfg.ProxyAddress)
 	if err != nil {
 		errCh <- errors.E(op, err)
 

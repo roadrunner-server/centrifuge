@@ -16,7 +16,7 @@ import (
 	mocklogger "tests/mock"
 
 	centrifugeClient "github.com/centrifugal/centrifuge-go"
-	"github.com/roadrunner-server/centrifuge/v4"
+	"github.com/roadrunner-server/centrifuge/v5"
 	"github.com/roadrunner-server/config/v4"
 	"github.com/roadrunner-server/endure/v2"
 	"github.com/roadrunner-server/logger/v4"

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/roadrunner-server/errors"
-	"github.com/roadrunner-server/sdk/v4/pool"
+	"github.com/roadrunner-server/pool/pool"
 )
 
 type Config struct {

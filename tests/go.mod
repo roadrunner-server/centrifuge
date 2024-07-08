@@ -5,12 +5,12 @@ go 1.22.5
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0
-	github.com/roadrunner-server/config/v4 v4.9.2
+	github.com/roadrunner-server/config/v5 v5.0.0
 	github.com/roadrunner-server/endure/v2 v2.4.5
-	github.com/roadrunner-server/logger/v4 v4.4.4
-	github.com/roadrunner-server/rpc/v4 v4.4.4
-	github.com/roadrunner-server/server/v4 v4.8.4
-	github.com/roadrunner-server/status/v4 v4.6.4
+	github.com/roadrunner-server/logger/v5 v5.0.0
+	github.com/roadrunner-server/rpc/v5 v5.0.0
+	github.com/roadrunner-server/server/v5 v5.0.0
+	github.com/roadrunner-server/status/v5 v5.0.0
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 )
@@ -51,7 +51,6 @@ require (
 	github.com/roadrunner-server/events v1.0.0 // indirect
 	github.com/roadrunner-server/goridge/v3 v3.8.2 // indirect
 	github.com/roadrunner-server/pool v1.0.0 // indirect
-	github.com/roadrunner-server/sdk/v4 v4.8.0 // indirect
 	github.com/roadrunner-server/tcplisten v1.5.0 // indirect
 	github.com/sagikazarmark/locafero v0.6.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
@@ -71,10 +70,10 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
-	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/exp v0.0.0-20240707233637-46b078467d37 // indirect
+	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240701130421-f6361c86f094 // indirect
 	google.golang.org/grpc v1.65.0 // indirect

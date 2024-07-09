@@ -2,8 +2,6 @@ module tests
 
 go 1.22.5
 
-toolchain go1.23rc1
-
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0

@@ -5,12 +5,12 @@ go 1.22.5
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0
-	github.com/roadrunner-server/config/v5 v5.0.1
+	github.com/roadrunner-server/config/v5 v5.0.2
 	github.com/roadrunner-server/endure/v2 v2.4.6
-	github.com/roadrunner-server/logger/v5 v5.0.1
-	github.com/roadrunner-server/rpc/v5 v5.0.1
-	github.com/roadrunner-server/server/v5 v5.0.1
-	github.com/roadrunner-server/status/v5 v5.0.1
+	github.com/roadrunner-server/logger/v5 v5.0.2
+	github.com/roadrunner-server/rpc/v5 v5.0.2
+	github.com/roadrunner-server/server/v5 v5.0.2
+	github.com/roadrunner-server/status/v5 v5.0.2
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 )
@@ -75,7 +75,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240723171418-e6d459c13d2a // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240725223205-93522f1f2a9f // indirect
 	google.golang.org/grpc v1.65.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect

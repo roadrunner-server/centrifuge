@@ -1,6 +1,6 @@
 module tests
 
-go 1.22.5
+go 1.23.0
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.2

@@ -50,6 +50,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 		return nil, err
 	}
 
+	p.log.Debug("finished connect proxy request")
 	return cr, nil
 }
 
@@ -87,6 +88,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 		return nil, err
 	}
 
+	p.log.Debug("finished refresh proxy request")
 	return rr, nil
 }
 
@@ -124,6 +126,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 		return nil, err
 	}
 
+	p.log.Debug("finished subscribe proxy request")
 	return sr, nil
 }
 
@@ -161,6 +164,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 		return nil, err
 	}
 
+	p.log.Debug("finished publish proxy request")
 	return pr, nil
 }
 
@@ -198,6 +202,7 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 		return nil, err
 	}
 
+	p.log.Debug("finished RPC proxy request")
 	return rresp, nil
 }
 
@@ -235,6 +240,7 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 		return nil, err
 	}
 
+	p.log.Debug("finished RPC SubRefresh request")
 	return rresp, nil
 }
 
@@ -272,6 +278,7 @@ func (p *Proxy) NotifyChannelState(ctx context.Context, request *centrifugov1.No
 		return nil, err
 	}
 
+	p.log.Debug("finished NotifyChannelState request")
 	return rresp, nil
 }
 

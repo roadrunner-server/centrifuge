@@ -152,7 +152,10 @@ func (p *Plugin) Stop(ctx context.Context) error {
 	stCh := make(chan struct{}, 1)
 	go func() {
 		p.mu.Lock()
-		p.gRPCServer.Stop()
+		go func() {
+			p.pool.Destroy(ctx)
+		}()
+		p.gRPCServer.GracefulStop()
 		p.mu.Unlock()
 		stCh <- struct{}{}
 	}()

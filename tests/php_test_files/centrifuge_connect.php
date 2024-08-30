@@ -26,6 +26,15 @@ while ($request = $centrifugoWorker->waitRequest()) {
 
         continue;
     }
+    if ($request instanceof Request\Subscribe) {
+        try {
+            $request->respond(new Payload\SubscribeResponse());
+        } catch (\Throwable $e) {
+                $request->error($e->getCode(), $e->getMessage());
+        }
+
+        continue;
+    }
 
 
     if ($request instanceof Request\Connect) {

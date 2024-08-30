@@ -1,6 +1,7 @@
 package centrifugo
 
 import (
+	"context"
 	"io"
 	"log/slog"
 	"net/http"
@@ -34,10 +35,15 @@ func TestCentrifugoPluginInit(t *testing.T) {
 	cfg := &config.Plugin{
 		Version: "2023.3.0",
 		Path:    "configs/.rr-centrifugo-init.yaml",
-		Prefix:  "rr",
 	}
 
-	cmd := exec.Command("env/centrifugo", "--config", "env/config.json", "--admin")
+	var cmd *exec.Cmd
+	if runtime.GOOS == "darwin" {
+		cmd = exec.Command("env/centrifugo_mac", "--config", "env/config.json", "--admin")
+	} else {
+		cmd = exec.Command("env/centrifugo", "--config", "env/config.json", "--admin")
+	}
+
 	err := cmd.Start()
 	require.NoError(t, err)
 
@@ -89,6 +95,7 @@ func TestCentrifugoPluginInit(t *testing.T) {
 				if err != nil {
 					assert.FailNow(t, "error", err.Error())
 				}
+
 				return
 			case <-stopCh:
 				// timeout
@@ -96,6 +103,7 @@ func TestCentrifugoPluginInit(t *testing.T) {
 				if err != nil {
 					assert.FailNow(t, "error", err.Error())
 				}
+
 				return
 			}
 		}
@@ -139,7 +147,6 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 	cfg := &config.Plugin{
 		Version: "2023.3.0",
 		Path:    "configs/.rr-centrifugo-status.yaml",
-		Prefix:  "rr",
 	}
 
 	var cmd *exec.Cmd
@@ -200,6 +207,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 				if err != nil {
 					assert.FailNow(t, "error", err.Error())
 				}
+
 				return
 			case <-stopCh:
 				// timeout
@@ -207,6 +215,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 				if err != nil {
 					assert.FailNow(t, "error", err.Error())
 				}
+
 				return
 			}
 		}
@@ -216,7 +225,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, err := http.NewRequest("GET", "http://127.0.0.1:35544/health?plugin=centrifuge", nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "http://127.0.0.1:35544/health?plugin=centrifuge", nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -228,7 +237,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_ = resp.Body.Close()
 
-	req, err = http.NewRequest("GET", "http://127.0.0.1:35544/ready?plugin=centrifuge", nil)
+	req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, "http://127.0.0.1:35544/ready?plugin=centrifuge", nil)
 	require.NoError(t, err)
 
 	resp, err = client.Do(req)

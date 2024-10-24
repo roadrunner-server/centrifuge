@@ -1,0 +1,56 @@
+{
+  "$id": "https://raw.githubusercontent.com/roadrunner-server/centrifuge/refs/heads/master/schema.json",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "description": "All the valid configuration parameters for the Centrifugo plugin for RoadRunner.",
+  "type": "object",
+  "title": "roadrunner-centrifuge",
+  "additionalProperties": false,
+  "properties": {
+    "proxy_address": {
+      "description": "The address of the Centrifugo proxy server.",
+      "type": "string",
+      "default": "tcp://127.0.0.1:30000"
+    },
+    "grpc_api_address": {
+      "description": "The address/port of the gRPC server API.",
+      "type": "string",
+      "default": "tcp://127.0.0.1:10000"
+    },
+    "use_compressor": {
+      "description": "Whether to use gRPC gzip compressor.",
+      "type": "boolean",
+      "default": false
+    },
+    "version": {
+      "description": "Your application version.",
+      "type": "string",
+      "default": "v1.0.0"
+    },
+    "name": {
+      "description": "Your application name.",
+      "type": "string",
+      "default": "roadrunner",
+      "minLength": 1
+    },
+    "pool": {
+      "$ref": "https://raw.githubusercontent.com/roadrunner-server/pool/refs/heads/master/schema.json"
+    },
+    "tls": {
+      "description": "TLS settings",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cert": {
+          "$ref": "https://raw.githubusercontent.com/roadrunner-server/http/refs/heads/master/schema.json#/$defs/SSL/properties/cert"
+        },
+        "key": {
+          "$ref": "https://raw.githubusercontent.com/roadrunner-server/http/refs/heads/master/schema.json#/$defs/SSL/properties/key"
+        }
+      },
+      "required": [
+        "cert",
+        "key"
+      ]
+    }
+  }
+}

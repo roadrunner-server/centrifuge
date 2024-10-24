@@ -50,8 +50,8 @@ func (c *Config) InitDefaults() error {
 
 	if c.Pool == nil {
 		c.Pool = &pool.Config{}
-		c.Pool.InitDefaults()
 	}
+	c.Pool.InitDefaults()
 
 	if c.TLS != nil { //nolint:nestif
 		if _, err := os.Stat(c.TLS.Key); err != nil {

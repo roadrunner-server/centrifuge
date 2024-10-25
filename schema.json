@@ -9,12 +9,14 @@
     "proxy_address": {
       "description": "The address of the Centrifugo proxy server.",
       "type": "string",
-      "default": "tcp://127.0.0.1:30000"
+      "default": "tcp://127.0.0.1:30000",
+      "minLength": 1
     },
     "grpc_api_address": {
       "description": "The address/port of the gRPC server API.",
       "type": "string",
-      "default": "tcp://127.0.0.1:10000"
+      "default": "tcp://127.0.0.1:10000",
+      "minLength": 1
     },
     "use_compressor": {
       "description": "Whether to use gRPC gzip compressor.",
@@ -24,7 +26,8 @@
     "version": {
       "description": "Your application version.",
       "type": "string",
-      "default": "v1.0.0"
+      "default": "v1.0.0",
+      "minLength": 1
     },
     "name": {
       "description": "Your application name.",

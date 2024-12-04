@@ -2,7 +2,7 @@ module github.com/roadrunner-server/centrifuge/v5
 
 go 1.23
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
@@ -11,7 +11,7 @@ require (
 	github.com/roadrunner-server/api/v4 v4.16.0
 	github.com/roadrunner-server/errors v1.4.1
 	github.com/roadrunner-server/goridge/v3 v3.8.3
-	github.com/roadrunner-server/pool v1.0.3
+	github.com/roadrunner-server/pool v1.1.0
 	github.com/roadrunner-server/tcplisten v1.5.1
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
@@ -46,6 +46,6 @@ require (
 	golang.org/x/sync v0.9.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241118233622-e639e219e697 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241202173237-19429a94021a // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

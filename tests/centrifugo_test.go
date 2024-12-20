@@ -233,7 +233,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 	require.NotNil(t, resp)
 
 	body, _ := io.ReadAll(resp.Body)
-	assert.Equal(t, "plugin: centrifuge, status: 200\n", string(body))
+	assert.Equal(t, `[{"plugin_name":"centrifuge","error_message":"","status_code":200}]`, string(body))
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_ = resp.Body.Close()
 
@@ -245,7 +245,7 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 	require.NotNil(t, resp)
 
 	body, _ = io.ReadAll(resp.Body)
-	assert.Equal(t, "plugin: centrifuge, status: 200\n", string(body))
+	assert.Equal(t, `[{"plugin_name":"centrifuge","error_message":"","status_code":200}]`, string(body))
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_ = resp.Body.Close()
 

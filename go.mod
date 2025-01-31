@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/goccy/go-json v0.10.4
+	github.com/goccy/go-json v0.10.5
 	github.com/prometheus/client_golang v1.20.5
 	github.com/roadrunner-server/api/v4 v4.18.1
 	github.com/roadrunner-server/errors v1.4.1
@@ -46,6 +46,6 @@ require (
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250124145028-65684f501c47 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250127172529-29210b9bc287 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

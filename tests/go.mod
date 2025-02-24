@@ -9,9 +9,9 @@ require (
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0
 	github.com/roadrunner-server/config/v5 v5.1.5
 	github.com/roadrunner-server/endure/v2 v2.6.1
-	github.com/roadrunner-server/logger/v5 v5.1.4
-	github.com/roadrunner-server/rpc/v5 v5.1.4
-	github.com/roadrunner-server/server/v5 v5.2.5
+	github.com/roadrunner-server/logger/v5 v5.1.5
+	github.com/roadrunner-server/rpc/v5 v5.1.5
+	github.com/roadrunner-server/server/v5 v5.2.6
 	github.com/roadrunner-server/status/v5 v5.1.5
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0

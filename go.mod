@@ -2,8 +2,6 @@ module github.com/roadrunner-server/centrifuge/v5
 
 go 1.24
 
-toolchain go1.24.0
-
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/goccy/go-json v0.10.5
@@ -15,7 +13,7 @@ require (
 	github.com/roadrunner-server/tcplisten v1.5.2
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
-	google.golang.org/grpc v1.71.0
+	google.golang.org/grpc v1.71.1
 	google.golang.org/protobuf v1.36.6
 )
 

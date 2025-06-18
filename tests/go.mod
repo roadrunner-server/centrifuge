@@ -7,12 +7,12 @@ toolchain go1.24.0
 require (
 	github.com/centrifugal/centrifuge-go v0.10.8
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0
-	github.com/roadrunner-server/config/v5 v5.1.7
+	github.com/roadrunner-server/config/v5 v5.1.8
 	github.com/roadrunner-server/endure/v2 v2.6.2
-	github.com/roadrunner-server/logger/v5 v5.1.7
-	github.com/roadrunner-server/rpc/v5 v5.1.7
-	github.com/roadrunner-server/server/v5 v5.2.8
-	github.com/roadrunner-server/status/v5 v5.1.7
+	github.com/roadrunner-server/logger/v5 v5.1.8
+	github.com/roadrunner-server/rpc/v5 v5.1.8
+	github.com/roadrunner-server/server/v5 v5.2.9
+	github.com/roadrunner-server/status/v5 v5.1.8
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
 )
@@ -28,7 +28,7 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect

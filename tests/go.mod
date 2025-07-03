@@ -5,7 +5,7 @@ go 1.24
 toolchain go1.24.0
 
 require (
-	github.com/centrifugal/centrifuge-go v0.10.9
+	github.com/centrifugal/centrifuge-go v0.10.10
 	github.com/roadrunner-server/centrifuge/v5 v5.0.0
 	github.com/roadrunner-server/config/v5 v5.1.8
 	github.com/roadrunner-server/endure/v2 v2.6.2
@@ -45,7 +45,7 @@ require (
 	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.65.0 // indirect
-	github.com/prometheus/procfs v0.16.1 // indirect
+	github.com/prometheus/procfs v0.17.0 // indirect
 	github.com/roadrunner-server/api/v4 v4.20.0 // indirect
 	github.com/roadrunner-server/errors v1.4.1 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect

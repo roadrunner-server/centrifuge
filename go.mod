@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/goccy/go-json v0.10.5
 	github.com/prometheus/client_golang v1.22.0
-	github.com/roadrunner-server/api/v4 v4.20.0
+	github.com/roadrunner-server/api/v4 v4.21.0
 	github.com/roadrunner-server/errors v1.4.1
 	github.com/roadrunner-server/goridge/v3 v3.8.3
 	github.com/roadrunner-server/pool v1.1.3

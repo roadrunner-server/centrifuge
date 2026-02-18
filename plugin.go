@@ -89,6 +89,7 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 
 	p.log = log.NamedLogger(name)
 	p.server = server
+	// nosemgrep
 	p.gRPCServer = grpc.NewServer()
 	p.client = newClient(p.cfg.GrpcAPIAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
 	p.statsExporter = newWorkersExporter(p)

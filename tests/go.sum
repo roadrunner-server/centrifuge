@@ -71,8 +71,6 @@ github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1 h1:pk2GfY77lIYWIfFdh9IwAvpo
 github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1/go.mod h1:ZiUsHTH+limC3NCqj0Kc8q81mbMh+aSvERbFELz9OJ0=
 github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1 h1:IypW4r2Z3flZ2QnhYBf9yv0pyiQi3SdOjurIHtdNcLY=
 github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1/go.mod h1:U3Cm4fS+etjtxRgUFINh33FJB/du1d2VEhIKgg43/tc=
-github.com/roadrunner-server/api/v4 v4.23.0 h1:lrVXgP4ozD/H5DrIdT181ldVhD1R9QT5qsi8qWUTDF4=
-github.com/roadrunner-server/api/v4 v4.23.0/go.mod h1:AlHuVVOklb7XF33Cf7IfmwOn3j4gGg37on9Xi6j08Bg=
 github.com/roadrunner-server/config/v5 v5.1.9 h1:ReWwts/prEvuC4yVJ0BRDmY5sxw/1c+hGTSdJ71hIQU=
 github.com/roadrunner-server/config/v5 v5.1.9/go.mod h1:R6YyTWahW61tWHOI2BfdkQU/0Zc/2d6/JbJ/KEvq8F8=
 github.com/roadrunner-server/endure/v2 v2.6.2 h1:sIB4kTyE7gtT3fDhuYWUYn6Vt/dcPtiA6FoNS1eS+84=
@@ -93,12 +91,12 @@ github.com/roadrunner-server/rpc/v5 v5.1.9 h1:AbRd2xEkWY8N3J4GUhoDeL+pnfwzKHazV4
 github.com/roadrunner-server/rpc/v5 v5.1.9/go.mod h1:TtbPY1cPvL46Mk9Dh4qwx33WO4R3m1lZkgL2q2MfHtA=
 github.com/roadrunner-server/server/v5 v5.2.10 h1:IshR3mlXJ/fh+zY17tN3Q7GgaanMzA7H9wwEz4PxCSA=
 github.com/roadrunner-server/server/v5 v5.2.10/go.mod h1:oxXhRo2EDykCk8ujhdjyJCb2rPpoTt8AVy46RHRfeeo=
-github.com/roadrunner-server/status/v5 v5.1.9 h1:TxDCj88Y7Bzcwbv8zwvNV1dE25n2x7IYw5M+kqadZWk=
-github.com/roadrunner-server/status/v5 v5.1.9/go.mod h1:9v53l4V680aIPinjTFHr8ZKEGwvFPEeHTFCaJkWjejA=
+github.com/roadrunner-server/status/v6 v6.0.0-beta.1 h1:mzSX2KrOyfTdf4qVoqN1u9HriHRxpvbWae6cTbsvwJk=
+github.com/roadrunner-server/status/v6 v6.0.0-beta.1/go.mod h1:qz52ENHnjpc4RuaDewgdB8So4MHHNA1C37H/74C/Nqk=
 github.com/roadrunner-server/tcplisten v1.5.2 h1:nn8yXYrhRDkfQ9AAu4V075uT4fZRmOnpxkawgE+bWPA=
 github.com/roadrunner-server/tcplisten v1.5.2/go.mod h1:DufGBz7Dlx2KrNe/4RukEvGMTqZKB0Uve1GztwcyyR8=
-github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
-github.com/rogpeppe/go-internal v1.13.1/go.mod h1:uMEvuHeurkdAXX61udpOXGD/AzZDWNMNyH2VO9fmH0o=
+github.com/rogpeppe/go-internal v1.14.1 h1:UQB4HGPB6osV0SQTLymcB4TgvyWu6ZyliaW0tI/otEQ=
+github.com/rogpeppe/go-internal v1.14.1/go.mod h1:MaRKkUm5W0goXpeCfT7UZI6fk/L7L7so1lCWt35ZSgc=
 github.com/sagikazarmark/locafero v0.12.0 h1:/NQhBAkUb4+fH1jivKHWusDYFjMOOKU88eegjfxfHb4=
 github.com/sagikazarmark/locafero v0.12.0/go.mod h1:sZh36u/YSZ918v0Io+U9ogLYQJ9tLLBmM4eneO6WwsI=
 github.com/segmentio/asm v1.2.1 h1:DTNbBqs57ioxAD4PrArqftgypG4/qNpXoJx8TVXxPR0=

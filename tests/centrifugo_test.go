@@ -23,7 +23,7 @@ import (
 	"github.com/roadrunner-server/logger/v5"
 	"github.com/roadrunner-server/rpc/v5"
 	"github.com/roadrunner-server/server/v5"
-	"github.com/roadrunner-server/status/v5"
+	"github.com/roadrunner-server/status/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"

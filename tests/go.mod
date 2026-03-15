@@ -12,7 +12,7 @@ require (
 	github.com/roadrunner-server/logger/v5 v5.1.9
 	github.com/roadrunner-server/rpc/v5 v5.1.9
 	github.com/roadrunner-server/server/v5 v5.2.10
-	github.com/roadrunner-server/status/v5 v5.1.9
+	github.com/roadrunner-server/status/v6 v6.0.0-beta.1
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/zap v1.27.1
 )
@@ -48,7 +48,6 @@ require (
 	github.com/prometheus/procfs v0.19.2 // indirect
 	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1 // indirect
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1 // indirect
-	github.com/roadrunner-server/api/v4 v4.23.0 // indirect
 	github.com/roadrunner-server/errors v1.4.1 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect
 	github.com/roadrunner-server/goridge/v3 v3.8.3 // indirect

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
+	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/pool/payload"
 	"github.com/roadrunner-server/pool/pool"

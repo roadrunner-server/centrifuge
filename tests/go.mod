@@ -6,7 +6,7 @@ toolchain go1.26.0
 
 require (
 	github.com/centrifugal/centrifuge-go v0.10.11
-	github.com/roadrunner-server/centrifuge/v5 v5.1.9
+	github.com/roadrunner-server/centrifuge/v6 v6.0.0
 	github.com/roadrunner-server/config/v5 v5.1.9
 	github.com/roadrunner-server/endure/v2 v2.6.2
 	github.com/roadrunner-server/logger/v5 v5.1.9
@@ -17,7 +17,7 @@ require (
 	go.uber.org/zap v1.27.1
 )
 
-replace github.com/roadrunner-server/centrifuge/v5 => ../
+replace github.com/roadrunner-server/centrifuge/v6 => ../
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -46,10 +46,13 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/procfs v0.19.2 // indirect
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1 // indirect
+	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1 // indirect
 	github.com/roadrunner-server/api/v4 v4.23.0 // indirect
 	github.com/roadrunner-server/errors v1.4.1 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect
 	github.com/roadrunner-server/goridge/v3 v3.8.3 // indirect
+	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.1 // indirect
 	github.com/roadrunner-server/pool v1.1.3 // indirect
 	github.com/roadrunner-server/tcplisten v1.5.2 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect

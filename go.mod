@@ -1,4 +1,4 @@
-module github.com/roadrunner-server/centrifuge/v5
+module github.com/roadrunner-server/centrifuge/v6
 
 go 1.26
 
@@ -8,9 +8,10 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/goccy/go-json v0.10.5
 	github.com/prometheus/client_golang v1.23.2
-	github.com/roadrunner-server/api/v4 v4.23.0
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1
+	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1
 	github.com/roadrunner-server/errors v1.4.1
-	github.com/roadrunner-server/goridge/v3 v3.8.3
+	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.1
 	github.com/roadrunner-server/pool v1.1.3
 	github.com/roadrunner-server/tcplisten v1.5.2
 	github.com/stretchr/testify v1.11.1
@@ -36,6 +37,7 @@ require (
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/procfs v0.19.2 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect
+	github.com/roadrunner-server/goridge/v3 v3.8.3 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
 	github.com/tklauser/go-sysconf v0.3.16 // indirect

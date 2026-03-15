@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/roadrunner-server/goridge/v3/pkg/frame"
+	"github.com/roadrunner-server/goridge/v4/pkg/frame"
 	"github.com/roadrunner-server/pool/payload"
 )
 

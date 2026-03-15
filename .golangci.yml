@@ -1,10 +1,6 @@
 version: "2"
 run:
   allow-parallel-runners: true
-output:
-  formats:
-    text:
-      path: stdout
 linters:
   default: none
   enable:
@@ -16,6 +12,8 @@ linters:
     - errorlint
     - exhaustive
     - gochecknoglobals
+    - gochecknoinits
+    - gocognit
     - goconst
     - gocritic
     - goprintffuncname
@@ -36,6 +34,8 @@ linters:
     - unused
     - whitespace
   settings:
+    dupl:
+      threshold: 100
     goconst:
       min-len: 2
       min-occurrences: 3
@@ -52,6 +52,8 @@ linters:
       simple: true
       range-loops: true
       for-loops: true
+    wsl:
+      allow-assign-and-anything: true
   exclusions:
     generated: lax
     presets:
@@ -59,15 +61,7 @@ linters:
       - common-false-positives
       - legacy
       - std-error-handling
-    rules:
-      - linters:
-          - dupl
-          - funlen
-          - gocognit
-          - scopelint
-        path: _test\.go
     paths:
-      - internal/debug/server_test.go
       - .github
       - .git
       - third_party$
@@ -80,7 +74,6 @@ formatters:
   exclusions:
     generated: lax
     paths:
-      - internal/debug/server_test.go
       - .github
       - .git
       - third_party$

@@ -3,7 +3,7 @@ package centrifuge
 import (
 	"context"
 
-	v1Client "github.com/roadrunner-server/api/v4/build/centrifugo/api/v1"
+	v1Client "github.com/roadrunner-server/api-go/v6/centrifugo/api/v1"
 	"github.com/roadrunner-server/errors"
 	"go.uber.org/zap"
 )
@@ -48,7 +48,7 @@ service CentrifugoApi {
   rpc SendPushNotification(SendPushNotificationRequest) returns (SendPushNotificationResponse) {}
   rpc UpdatePushStatus(UpdatePushStatusRequest) returns (UpdatePushStatusResponse) {}
   rpc CancelPush(CancelPushRequest) returns (CancelPushResponse) {}
-  rpc RateLimit(RateLimitRequest) returns (RateLimitResponse) {}
+
 }
 */
 
@@ -483,7 +483,7 @@ func (r *rpc) DeviceRemove(in *v1Client.DeviceRemoveRequest, out *v1Client.Devic
 }
 
 func (r *rpc) DeviceList(in *v1Client.DeviceListRequest, out *v1Client.DeviceListResponse) error {
-	r.log.Debug("got device remove request")
+	r.log.Debug("got device list request")
 
 	client := r.client.client()
 	if client == nil {
@@ -616,24 +616,6 @@ func (r *rpc) CancelPush(in *v1Client.CancelPushRequest, out *v1Client.CancelPus
 		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
 	}
 	resp, err := client.CancelPush(context.Background(), in)
-	if err != nil {
-		return err
-	}
-
-	out.Error = resp.GetError()
-	out.Result = resp.GetResult()
-
-	return nil
-}
-
-func (r *rpc) RateLimit(in *v1Client.RateLimitRequest, out *v1Client.RateLimitResponse) error {
-	r.log.Debug("got rate limit request")
-
-	client := r.client.client()
-	if client == nil {
-		return errors.Str("RoadRunner is not ready yet, try in a few seconds")
-	}
-	resp, err := client.RateLimit(context.Background(), in)
 	if err != nil {
 		return err
 	}

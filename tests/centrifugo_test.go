@@ -17,7 +17,7 @@ import (
 	mocklogger "tests/mock"
 
 	centrifugeClient "github.com/centrifugal/centrifuge-go"
-	"github.com/roadrunner-server/centrifuge/v5"
+	"github.com/roadrunner-server/centrifuge/v6"
 	"github.com/roadrunner-server/config/v5"
 	"github.com/roadrunner-server/endure/v2"
 	"github.com/roadrunner-server/logger/v5"
@@ -39,9 +39,9 @@ func TestCentrifugoPluginInit(t *testing.T) {
 
 	var cmd *exec.Cmd
 	if runtime.GOOS == "darwin" {
-		cmd = exec.Command("env/centrifugo_mac", "--config", "env/config.json", "--admin")
+		cmd = exec.CommandContext(t.Context(), "env/centrifugo_mac", "--config", "env/config.json", "--admin")
 	} else {
-		cmd = exec.Command("env/centrifugo", "--config", "env/config.json", "--admin")
+		cmd = exec.CommandContext(t.Context(), "env/centrifugo", "--config", "env/config.json", "--admin")
 	}
 
 	err := cmd.Start()
@@ -151,9 +151,9 @@ func TestCentrifugoStatusChecks(t *testing.T) {
 
 	var cmd *exec.Cmd
 	if runtime.GOOS == "darwin" {
-		cmd = exec.Command("env/centrifugo_mac", "--config", "env/config.json", "--admin")
+		cmd = exec.CommandContext(t.Context(), "env/centrifugo_mac", "--config", "env/config.json", "--admin")
 	} else {
-		cmd = exec.Command("env/centrifugo", "--config", "env/config.json", "--admin")
+		cmd = exec.CommandContext(t.Context(), "env/centrifugo", "--config", "env/config.json", "--admin")
 	}
 
 	err := cmd.Start()

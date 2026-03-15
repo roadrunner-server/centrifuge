@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	v1Client "github.com/roadrunner-server/api/v4/build/centrifugo/api/v1"
+	v1Client "github.com/roadrunner-server/api-go/v6/centrifugo/api/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -64,10 +64,8 @@ func (c *client) connect() error {
 				MinVersion:   tls.VersionTLS12,
 			}
 
-			var errt error
-			var conn *grpc.ClientConn
-			conn, errt = grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(credentials.NewTLS(tlscfg)))
-			if err != nil {
+			conn, errt := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(credentials.NewTLS(tlscfg)))
+			if errt != nil {
 				c.log.Debug("attempted to connect to the centrifugo server with TLS, retrying", zap.Error(errt))
 				return errt
 			}
@@ -77,10 +75,8 @@ func (c *client) connect() error {
 		}
 
 		// non-tls
-		var conn *grpc.ClientConn
-		var errc error
-		conn, err = grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err != nil {
+		conn, errc := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if errc != nil {
 			c.log.Debug("attempted to connect to the centrifugo server, retrying", zap.Error(errc))
 			return errc
 		}

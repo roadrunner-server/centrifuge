@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/goccy/go-json"
-	centrifugov1 "github.com/roadrunner-server/api/v4/build/centrifugo/proxy/v1"
+	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
-	"github.com/roadrunner-server/goridge/v3/pkg/frame"
+	"github.com/roadrunner-server/goridge/v4/pkg/frame"
 	"github.com/roadrunner-server/pool/payload"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
@@ -241,6 +241,44 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 	}
 
 	p.log.Debug("finished RPC SubRefresh request")
+	return rresp, nil
+}
+
+func (p *Proxy) NotifyCacheEmpty(ctx context.Context, request *centrifugov1.NotifyCacheEmptyRequest) (*centrifugov1.NotifyCacheEmptyResponse, error) {
+	p.log.Debug("got NotifyCacheEmpty request")
+
+	data, err := proto.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	md, _ := metadata.FromIncomingContext(ctx)
+	md.Append("type", "notifycacheempty")
+
+	meta, err := json.Marshal(md)
+	if err != nil {
+		return nil, err
+	}
+
+	pld := &payload.Payload{
+		Context: meta,
+		Body:    data,
+		Codec:   frame.CodecProto,
+	}
+
+	re, err := p.pw.Exec(ctx, pld)
+	if err != nil {
+		return nil, err
+	}
+
+	rresp := &centrifugov1.NotifyCacheEmptyResponse{}
+
+	err = proto.Unmarshal(re.Body, rresp)
+	if err != nil {
+		return nil, err
+	}
+
+	p.log.Debug("finished NotifyCacheEmpty request")
 	return rresp, nil
 }
 

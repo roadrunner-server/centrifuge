@@ -3,7 +3,8 @@ package centrifuge
 import (
 	"context"
 
-	"github.com/goccy/go-json"
+	"encoding/json"
+
 	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/goridge/v4/pkg/frame"

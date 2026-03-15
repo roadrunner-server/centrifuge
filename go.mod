@@ -6,7 +6,6 @@ toolchain go1.26.0
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/goccy/go-json v0.10.5
 	github.com/prometheus/client_golang v1.23.2
 	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1

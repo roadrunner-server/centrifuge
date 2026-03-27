@@ -9,7 +9,7 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1
-	github.com/roadrunner-server/errors v1.4.1
+	github.com/roadrunner-server/errors v1.5.0
 	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.1
 	github.com/roadrunner-server/pool v1.1.3
 	github.com/roadrunner-server/tcplisten v1.5.2

@@ -2,6 +2,7 @@ package centrifuge
 
 import (
 	"context"
+	"log/slog"
 
 	"encoding/json"
 
@@ -9,14 +10,13 @@ import (
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/goridge/v4/pkg/frame"
 	"github.com/roadrunner-server/pool/v2/payload"
-	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 )
 
 type Proxy struct {
 	centrifugov1.UnimplementedCentrifugoProxyServer
-	log *zap.Logger
+	log *slog.Logger
 	pw  *wrapper
 }
 
@@ -171,7 +171,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 }
 
 func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*centrifugov1.RPCResponse, error) {
-	p.log.Debug("got RPC proxy request", zap.String("method", request.Method))
+	p.log.Debug("got RPC proxy request", "method", request.Method)
 	data, err := proto.Marshal(request)
 
 	if err != nil {
@@ -209,7 +209,7 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 }
 
 func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefreshRequest) (*centrifugov1.SubRefreshResponse, error) {
-	p.log.Debug("got RPC SubRefresh request", zap.String("channel", request.Channel))
+	p.log.Debug("got RPC SubRefresh request", "channel", request.Channel)
 
 	data, err := proto.Marshal(request)
 	if err != nil {

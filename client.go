@@ -2,12 +2,12 @@ package centrifuge
 
 import (
 	"crypto/tls"
+	"log/slog"
 	"sync"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
 	v1Client "github.com/roadrunner-server/api-go/v6/centrifugo/api/v1"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
@@ -19,7 +19,7 @@ import (
 type client struct {
 	mu sync.RWMutex
 
-	log      *zap.Logger
+	log      *slog.Logger
 	addr     string
 	tls      *TLS
 	compress bool
@@ -27,7 +27,7 @@ type client struct {
 	centrifugoClient v1Client.CentrifugoApiClient
 }
 
-func newClient(addr string, tls *TLS, log *zap.Logger, compress bool) *client {
+func newClient(addr string, tls *TLS, log *slog.Logger, compress bool) *client {
 	return &client{
 		addr:     addr,
 		tls:      tls,
@@ -66,7 +66,7 @@ func (c *client) connect() error {
 
 			conn, errt := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(credentials.NewTLS(tlscfg)))
 			if errt != nil {
-				c.log.Debug("attempted to connect to the centrifugo server with TLS, retrying", zap.Error(errt))
+				c.log.Debug("attempted to connect to the centrifugo server with TLS, retrying", "error", errt)
 				return errt
 			}
 
@@ -77,7 +77,7 @@ func (c *client) connect() error {
 		// non-tls
 		conn, errc := grpc.NewClient(c.addr, grpc.WithDefaultCallOptions(opts...), grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if errc != nil {
-			c.log.Debug("attempted to connect to the centrifugo server, retrying", zap.Error(errc))
+			c.log.Debug("attempted to connect to the centrifugo server, retrying", "error", errc)
 			return errc
 		}
 

@@ -2,15 +2,15 @@ package centrifuge
 
 import (
 	"context"
+	"log/slog"
 
 	v1Client "github.com/roadrunner-server/api-go/v6/centrifugo/api/v1"
 	"github.com/roadrunner-server/errors"
-	"go.uber.org/zap"
 )
 
 type rpc struct {
 	client *client
-	log    *zap.Logger
+	log    *slog.Logger
 }
 
 /*

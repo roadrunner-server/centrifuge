@@ -3,6 +3,7 @@ package centrifuge
 import (
 	"context"
 	stderr "errors"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -14,7 +15,6 @@ import (
 	"github.com/roadrunner-server/pool/v2/state/process"
 	"github.com/roadrunner-server/pool/v2/worker"
 	"github.com/roadrunner-server/tcplisten"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
 
@@ -48,19 +48,19 @@ type Pool interface {
 }
 
 type Logger interface {
-	NamedLogger(name string) *zap.Logger
+	NamedLogger(name string) *slog.Logger
 }
 
 // Server creates workers for the application.
 type Server interface {
-	NewPool(ctx context.Context, cfg *pool.Config, env map[string]string, _ *zap.Logger) (*staticPool.Pool, error)
+	NewPool(ctx context.Context, cfg *pool.Config, env map[string]string, _ *slog.Logger) (*staticPool.Pool, error)
 }
 
 type Plugin struct {
 	mu  sync.RWMutex
 	cfg *Config
 
-	log    *zap.Logger
+	log    *slog.Logger
 	server Server
 
 	// proxy server
@@ -135,7 +135,7 @@ func (p *Plugin) Serve() chan error {
 				return
 			}
 
-			p.log.Error("grpc proxy error", zap.Error(errL))
+			p.log.Error("grpc proxy error", "error", errL)
 		}
 	}()
 

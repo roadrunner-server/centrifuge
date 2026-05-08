@@ -18,3 +18,4 @@ vendor/
 .vale.ini
 .DS_Store
 .vale-styles
+**/.claude/settings.local.json

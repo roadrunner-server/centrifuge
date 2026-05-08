@@ -8,13 +8,14 @@ import (
 	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/goridge/v4/pkg/frame"
-	"github.com/roadrunner-server/pool/payload"
+	"github.com/roadrunner-server/pool/v2/payload"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 )
 
 type Proxy struct {
+	centrifugov1.UnimplementedCentrifugoProxyServer
 	log *zap.Logger
 	pw  *wrapper
 }

@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/roadrunner-server/goridge/v4/pkg/frame"
-	"github.com/roadrunner-server/pool/payload"
+	"github.com/roadrunner-server/pool/v2/payload"
 )
 
 type wrapper struct {

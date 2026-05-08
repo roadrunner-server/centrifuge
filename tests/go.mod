@@ -14,7 +14,7 @@ require (
 	github.com/roadrunner-server/server/v5 v5.2.10
 	github.com/roadrunner-server/status/v6 v6.0.0-beta.1
 	github.com/stretchr/testify v1.11.1
-	go.uber.org/zap v1.27.1
+	go.uber.org/zap v1.28.0
 )
 
 replace github.com/roadrunner-server/centrifuge/v6 => ../
@@ -46,13 +46,14 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.67.5 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
-	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.1 // indirect
-	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.1 // indirect
-	github.com/roadrunner-server/errors v1.4.1 // indirect
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.4 // indirect
+	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2 // indirect
+	github.com/roadrunner-server/errors v1.5.0 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect
 	github.com/roadrunner-server/goridge/v3 v3.8.3 // indirect
 	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.1 // indirect
 	github.com/roadrunner-server/pool v1.1.3 // indirect
+	github.com/roadrunner-server/pool/v2 v2.0.0-beta.1 // indirect
 	github.com/roadrunner-server/tcplisten v1.5.2 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
@@ -73,12 +74,12 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/net v0.52.0 // indirect
+	golang.org/x/net v0.54.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
-	golang.org/x/text v0.35.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260311181403-84a4fc48630c // indirect
-	google.golang.org/grpc v1.79.2 // indirect
+	golang.org/x/sys v0.44.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260504160031-60b97b32f348 // indirect
+	google.golang.org/grpc v1.81.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

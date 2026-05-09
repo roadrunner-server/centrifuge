@@ -14,8 +14,6 @@ import (
 	"testing"
 	"time"
 
-	mocklogger "tests/mock"
-
 	centrifugeClient "github.com/centrifugal/centrifuge-go"
 	"github.com/roadrunner-server/centrifuge/v6"
 	"github.com/roadrunner-server/config/v5"
@@ -26,7 +24,7 @@ import (
 	"github.com/roadrunner-server/status/v6"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/zap"
+	mocklogger "tests/mock"
 )
 
 func TestCentrifugoPluginInit(t *testing.T) {
@@ -51,7 +49,7 @@ func TestCentrifugoPluginInit(t *testing.T) {
 		_ = cmd.Wait()
 	}()
 
-	l, oLogger := mocklogger.ZapTestLogger(zap.DebugLevel)
+	l, oLogger := mocklogger.SlogTestLogger(slog.LevelDebug)
 	err = cont.RegisterAll(
 		l,
 		cfg,

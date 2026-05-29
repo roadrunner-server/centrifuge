@@ -89,7 +89,7 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 
 	p.log = log.NamedLogger(name)
 	p.server = server
-	// nosemgrep
+	// nosemgrep: go.grpc.security.grpc-server-insecure-connection.grpc-server-insecure-connection
 	p.gRPCServer = grpc.NewServer()
 	p.client = newClient(p.cfg.GrpcAPIAddress, p.cfg.TLS, p.log, p.cfg.UseCompressor)
 	p.statsExporter = newWorkersExporter(p)
@@ -154,7 +154,9 @@ func (p *Plugin) Stop(ctx context.Context) error {
 	go func() {
 		p.mu.Lock()
 		p.gRPCServer.GracefulStop()
-		p.pool.Destroy(ctx)
+		if p.pool != nil {
+			p.pool.Destroy(ctx)
+		}
 		p.mu.Unlock()
 		stCh <- struct{}{}
 	}()
@@ -179,8 +181,8 @@ func (p *Plugin) Workers() []*process.State {
 
 	ps := make([]*process.State, 0, len(workers))
 
-	for i := range workers {
-		state, err := process.WorkerProcessState(workers[i])
+	for _, w := range workers {
+		state, err := process.WorkerProcessState(w)
 		if err != nil {
 			return nil
 		}

@@ -53,7 +53,7 @@ service CentrifugoApi {
 */
 
 func (r *rpc) Batch(in *v1Client.BatchRequest, out *v1Client.BatchResponse) error {
-	r.log.Debug("got butch request")
+	r.log.Debug("got batch request")
 
 	client := r.client.client()
 	if client == nil {

@@ -27,7 +27,10 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "connect")
 
 	meta, err := json.Marshal(md)
@@ -64,7 +67,10 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "refresh")
 
 	meta, err := json.Marshal(md)
@@ -102,7 +108,10 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "subscribe")
 
 	meta, err := json.Marshal(md)
@@ -140,7 +149,10 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "publish")
 
 	meta, err := json.Marshal(md)
@@ -178,7 +190,10 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "rpc")
 
 	meta, err := json.Marshal(md)
@@ -216,7 +231,10 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "subrefresh")
 
 	meta, err := json.Marshal(md)
@@ -254,7 +272,10 @@ func (p *Proxy) NotifyCacheEmpty(ctx context.Context, request *centrifugov1.Noti
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "notifycacheempty")
 
 	meta, err := json.Marshal(md)
@@ -292,7 +313,10 @@ func (p *Proxy) NotifyChannelState(ctx context.Context, request *centrifugov1.No
 		return nil, err
 	}
 
-	md, _ := metadata.FromIncomingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	}
 	md.Append("type", "notifychannelstate")
 
 	meta, err := json.Marshal(md)

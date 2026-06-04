@@ -1,7 +1,9 @@
 package centrifuge
 
 import (
+	stderrors "errors"
 	"os"
+	"strings"
 
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/pool/v2/pool"
@@ -32,8 +34,8 @@ func (c *Config) InitDefaults() error {
 		c.GrpcAPIAddress = "127.0.0.1:10000"
 	}
 
-	if len(c.GrpcAPIAddress) > 7 && c.GrpcAPIAddress[0:6] == "tcp://" {
-		c.GrpcAPIAddress = c.GrpcAPIAddress[6:]
+	if addr, ok := strings.CutPrefix(c.GrpcAPIAddress, "tcp://"); ok {
+		c.GrpcAPIAddress = addr
 	}
 
 	if c.ProxyAddress == "" {
@@ -55,7 +57,7 @@ func (c *Config) InitDefaults() error {
 
 	if c.TLS != nil { //nolint:nestif
 		if _, err := os.Stat(c.TLS.Key); err != nil {
-			if os.IsNotExist(err) {
+			if stderrors.Is(err, os.ErrNotExist) {
 				return errors.E(op, errors.Errorf("key file '%s' does not exists", c.TLS.Key))
 			}
 
@@ -63,7 +65,7 @@ func (c *Config) InitDefaults() error {
 		}
 
 		if _, err := os.Stat(c.TLS.Cert); err != nil {
-			if os.IsNotExist(err) {
+			if stderrors.Is(err, os.ErrNotExist) {
 				return errors.E(op, errors.Errorf("cert file '%s' does not exists", c.TLS.Cert))
 			}
 

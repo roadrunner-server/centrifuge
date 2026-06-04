@@ -69,8 +69,8 @@ func TestProxyMethodsMetadataGuard(t *testing.T) {
 		},
 	}
 
-	ctxNoMD := context.Background()
-	ctxWithMD := metadata.NewIncomingContext(context.Background(), metadata.Pairs("authorization", "bearer x"))
+	ctxNoMD := t.Context()
+	ctxWithMD := metadata.NewIncomingContext(t.Context(), metadata.Pairs("authorization", "bearer x"))
 
 	for name, call := range calls {
 		var err error

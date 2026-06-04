@@ -1,7 +1,6 @@
 package centrifuge
 
 import (
-	"context"
 	"io"
 	"log/slog"
 	"testing"
@@ -21,7 +20,7 @@ func TestPluginStopNilPool(t *testing.T) {
 	p := &Plugin{gRPCServer: grpc.NewServer()}
 
 	var err error
-	require.NotPanics(t, func() { err = p.Stop(context.Background()) })
+	require.NotPanics(t, func() { err = p.Stop(t.Context()) })
 	require.NoError(t, err)
 }
 

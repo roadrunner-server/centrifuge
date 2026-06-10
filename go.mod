@@ -5,9 +5,10 @@ go 1.26
 toolchain go1.26.3
 
 require (
+	connectrpc.com/connect v1.20.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/prometheus/client_golang v1.23.2
-	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.12
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.12.0.20260610203904-09df89976edc
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2
 	github.com/roadrunner-server/errors v1.5.0
 	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.2

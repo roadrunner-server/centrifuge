@@ -4,9 +4,11 @@ import (
 	"context"
 	stderr "errors"
 	"log/slog"
+	"net/http"
 	"sync"
 	"time"
 
+	"github.com/roadrunner-server/api-go/v6/centrifugo/api/v1/apiV1connect"
 	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/pool/v2/payload"
@@ -222,11 +224,13 @@ func (p *Plugin) Name() string {
 	return name
 }
 
-func (p *Plugin) RPC() any {
-	return &rpc{
+// RPC returns the CentrifugoApi connect handler mounted on the rpc plugin's
+// server; every call is proxied to the connected Centrifugo server.
+func (p *Plugin) RPC() (string, http.Handler) {
+	return apiV1connect.NewCentrifugoApiHandler(&rpc{
 		client: p.client,
 		log:    p.log,
-	}
+	})
 }
 
 // internal

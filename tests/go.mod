@@ -5,7 +5,7 @@ go 1.26
 toolchain go1.26.4
 
 require (
-	github.com/centrifugal/centrifuge-go v0.11.0
+	github.com/centrifugal/centrifuge-go v0.12.0
 	github.com/roadrunner-server/centrifuge/v6 v6.0.0
 	github.com/roadrunner-server/config/v6 v6.0.0-beta.3
 	github.com/roadrunner-server/endure/v2 v2.6.2

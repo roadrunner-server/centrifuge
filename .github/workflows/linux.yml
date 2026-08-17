@@ -57,7 +57,25 @@ jobs:
         run: |
           cd tests
           mkdir -p ./coverage-ci
+
+          docker compose -f env/docker-compose-centrifugo.yaml up -d
+
+          # the broker answers on 8000 once it has registered the proxies
+          ok=0
+          for _ in $(seq 60); do
+            if curl -sf -o /dev/null http://127.0.0.1:8000/; then
+              ok=1; break
+            fi
+            sleep 1
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::centrifugo not reachable after 60s"
+            docker compose -f env/docker-compose-centrifugo.yaml logs
+            exit 1
+          fi
+
           go test -timeout 20m -v -race -cover -tags=debug -coverpkg=github.com/roadrunner-server/centrifuge/v6/... -coverprofile=./coverage-ci/centrifuge.out -covermode=atomic ./...
+          docker compose -f env/docker-compose-centrifugo.yaml down
       - name: Run unit tests with coverage
         run: |
           mkdir -p ./tests/coverage-ci

@@ -1,0 +1,16 @@
+services:
+  centrifugo:
+    # pinned rather than :latest so a broker release cannot change CI under us
+    image: centrifugo/centrifugo:v6.9.1
+    container_name: centrifugo_1
+    command: centrifugo --config /centrifugo/env/config.json
+    volumes:
+      # the directory is mounted rather than the file: a single-file bind mount
+      # keeps pointing at the old inode when the config is rewritten
+      - ./:/centrifugo/env:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    # the proxy endpoints point back at the plugin's grpc server, which runs on
+    # the host rather than in this network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

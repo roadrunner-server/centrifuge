@@ -33,14 +33,17 @@ func centrifugePlugins() []any {
 // are the proxy records the plugin logs, so a broken proxy path fails rather
 // than merely logging nothing.
 func TestProxiesConnectAndSubscribe(t *testing.T) {
-	helpers.StartCentrifugo(t, centrifugoWS)
-
+	// RoadRunner has to come up first: every proxy endpoint in env/config.json
+	// points at the plugin's grpc server on 10001, and centrifugo blocks during
+	// startup until they answer, so starting it first deadlocks the boot.
 	rr, _ := helpers.Start(t,
 		"configs/.rr-centrifugo-init.yaml",
 		centrifugePlugins(),
 		helpers.WithObservedLogger(),
 		helpers.WithTCPProbe(proxyAddr),
 	)
+
+	helpers.StartCentrifugo(t, centrifugoWS)
 
 	client := centrifugeClient.NewProtobufClient("ws://"+centrifugoWS+"/connection/websocket", centrifugeClient.Config{
 		Name:               "roadrunner_tests",

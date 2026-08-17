@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"bytes"
 	"context"
 	"log/slog"
 	"net"
@@ -16,6 +17,7 @@ import (
 	"github.com/roadrunner-server/config/v6"
 	"github.com/roadrunner-server/endure/v2"
 	"github.com/roadrunner-server/logger/v6"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,6 +28,9 @@ const (
 	probeTimeout = time.Second * 15
 	probeTick    = time.Millisecond * 20
 	probeDial    = time.Second
+	// centrifugoTimeout is generous: the broker is a 35MB static binary and a
+	// cold CI runner pays for the first exec.
+	centrifugoTimeout = time.Second * 60
 )
 
 // bootCfg holds the options applied to a container before it is started.
@@ -195,7 +200,8 @@ func newContainer(t *testing.T, cfgPath string, plugins []any, opts []Option) (*
 
 // StartCentrifugo launches the centrifugo broker that the plugin proxies for,
 // picking the binary matching the host, and waits for its websocket endpoint to
-// answer. The process is killed on cleanup.
+// answer. Its output is captured so a failure to start is reported rather than
+// showing up as an unexplained probe timeout. The process is killed on cleanup.
 func StartCentrifugo(t *testing.T, wsAddr string) {
 	t.Helper()
 
@@ -205,16 +211,33 @@ func StartCentrifugo(t *testing.T, wsAddr string) {
 	}
 
 	cmd := exec.CommandContext(t.Context(), bin, "--config", "env/config.json", "--admin")
-	require.NoError(t, cmd.Start())
+
+	var out lockedBuffer
+	cmd.Stdout = &out
+	cmd.Stderr = &out
+
+	require.NoError(t, cmd.Start(), "could not start %s", bin)
+
+	// Wait has to run concurrently so the process is reaped as soon as it exits,
+	// which is what lets the probe tell "still starting" from "already dead".
+	exited := make(chan error, 1)
+	go func() { exited <- cmd.Wait() }()
 
 	t.Cleanup(func() {
 		if cmd.Process != nil {
 			_ = cmd.Process.Kill()
-			_ = cmd.Wait()
 		}
+		<-exited
 	})
 
-	require.Eventually(t, func() bool {
+	ok := assert.Eventually(t, func() bool {
+		select {
+		case err := <-exited:
+			exited <- err
+			return false
+		default:
+		}
+
 		d := net.Dialer{Timeout: probeDial}
 		conn, err := d.DialContext(t.Context(), "tcp", wsAddr)
 		if err != nil {
@@ -222,5 +245,28 @@ func StartCentrifugo(t *testing.T, wsAddr string) {
 		}
 		_ = conn.Close()
 		return true
-	}, probeTimeout, probeTick, "centrifugo did not start listening on %s", wsAddr)
+	}, centrifugoTimeout, probeTick)
+
+	if !ok {
+		t.Fatalf("centrifugo did not start listening on %s\noutput:\n%s", wsAddr, out.String())
+	}
+}
+
+// lockedBuffer collects the broker's output; Wait writes from its own goroutine
+// while the probe reads, so the buffer needs a mutex.
+type lockedBuffer struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (b *lockedBuffer) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.Write(p)
+}
+
+func (b *lockedBuffer) String() string {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.String()
 }

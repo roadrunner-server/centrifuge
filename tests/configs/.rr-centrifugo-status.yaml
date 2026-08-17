@@ -7,7 +7,9 @@ server:
   command: "php php_test_files/centrifuge_connect.php"
 
 centrifuge:
-  proxy_address: "tcp://127.0.0.1:10001"
+  # bound on all interfaces so the centrifugo container can reach it through
+  # host.docker.internal; on linux that is the bridge gateway, not loopback
+  proxy_address: "tcp://0.0.0.0:10001"
   grpc_api_address: "tcp"
   pool:
     num_workers: 1

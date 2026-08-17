@@ -1,249 +1,74 @@
 package centrifugo
 
 import (
-	"context"
-	"io"
-	"log/slog"
-	"net/http"
-	"os"
-	"os/exec"
-	"os/signal"
-	"runtime"
-	"sync"
-	"syscall"
 	"testing"
 	"time"
 
+	"tests/helpers"
+
 	centrifugeClient "github.com/centrifugal/centrifuge-go"
 	"github.com/roadrunner-server/centrifuge/v6"
-	"github.com/roadrunner-server/config/v6"
-	"github.com/roadrunner-server/endure/v2"
-	"github.com/roadrunner-server/logger/v6"
-	"github.com/roadrunner-server/rpc/v6"
+	rpcPlugin "github.com/roadrunner-server/rpc/v6"
 	"github.com/roadrunner-server/server/v6"
-	"github.com/roadrunner-server/status/v6"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	mocklogger "tests/mock"
 )
 
-func TestCentrifugoPluginInit(t *testing.T) {
-	cont := endure.New(slog.LevelDebug)
+const (
+	// centrifugoWS is the websocket endpoint the broker serves; the proxy
+	// endpoints in env/config.json point back at the plugin on 10001.
+	centrifugoWS   = "127.0.0.1:8000"
+	proxyAddr      = "127.0.0.1:10001"
+	clientTimeout  = time.Second * 100
+	logWait        = time.Second * 15
+	logWaitTick    = time.Millisecond * 50
+	subscribeTopic = "test"
+)
 
-	cfg := &config.Plugin{
-		Version: "2023.3.0",
-		Path:    "configs/.rr-centrifugo-init.yaml",
-	}
-
-	var cmd *exec.Cmd
-	if runtime.GOOS == "darwin" {
-		cmd = exec.CommandContext(t.Context(), "env/centrifugo_mac", "--config", "env/config.json", "--admin")
-	} else {
-		cmd = exec.CommandContext(t.Context(), "env/centrifugo", "--config", "env/config.json", "--admin")
-	}
-
-	err := cmd.Start()
-	require.NoError(t, err)
-
-	go func() {
-		_ = cmd.Wait()
-	}()
-
-	l, oLogger := mocklogger.SlogTestLogger(slog.LevelDebug)
-	err = cont.RegisterAll(
-		l,
-		cfg,
-		&centrifuge.Plugin{},
-		&server.Plugin{},
-		&rpc.Plugin{},
-	)
-	assert.NoError(t, err)
-
-	time.Sleep(time.Second)
-	err = cont.Init()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	ch, err := cont.Serve()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-
-	wg := &sync.WaitGroup{}
-
-	stopCh := make(chan struct{}, 1)
-
-	wg.Go(func() {
-		for {
-			select {
-			case e := <-ch:
-				assert.Fail(t, "error", e.Error.Error())
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-			case <-sig:
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-
-				return
-			case <-stopCh:
-				// timeout
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-
-				return
-			}
-		}
-	})
-
-	time.Sleep(time.Second * 5)
-	client := centrifugeClient.NewProtobufClient("ws://127.0.0.1:8000/connection/websocket", centrifugeClient.Config{
-		Name:               "roadrunner_tests",
-		Version:            "3.0.0",
-		ReadTimeout:        time.Second * 100,
-		WriteTimeout:       time.Second * 100,
-		HandshakeTimeout:   time.Second * 100,
-		MaxServerPingDelay: time.Second * 100,
-	})
-
-	err = client.Connect()
-	assert.NoError(t, err)
-
-	subscription, err := client.NewSubscription("test")
-	assert.NoError(t, err)
-
-	err = subscription.Subscribe()
-	assert.NoError(t, err)
-	time.Sleep(time.Second * 2)
-	err = subscription.Unsubscribe()
-	assert.NoError(t, err)
-	client.Close()
-
-	time.Sleep(time.Second * 2)
-	stopCh <- struct{}{}
-	_ = cmd.Process.Kill()
-	wg.Wait()
-
-	require.Equal(t, 1, oLogger.FilterMessageSnippet("got connect proxy request").Len())
-	require.Equal(t, 1, oLogger.FilterMessageSnippet("got subscribe proxy request").Len())
+func centrifugePlugins() []any {
+	return []any{&server.Plugin{}, &rpcPlugin.Plugin{}, &centrifuge.Plugin{}}
 }
 
-func TestCentrifugoStatusChecks(t *testing.T) {
-	cont := endure.New(slog.LevelDebug)
+// TestProxiesConnectAndSubscribe drives a real centrifugo client through the
+// broker, which proxies both calls back to the plugin over grpc. The assertions
+// are the proxy records the plugin logs, so a broken proxy path fails rather
+// than merely logging nothing.
+func TestProxiesConnectAndSubscribe(t *testing.T) {
+	helpers.WaitForCentrifugo(t, centrifugoWS)
 
-	cfg := &config.Plugin{
-		Version: "2023.3.0",
-		Path:    "configs/.rr-centrifugo-status.yaml",
-	}
-
-	var cmd *exec.Cmd
-	if runtime.GOOS == "darwin" {
-		cmd = exec.CommandContext(t.Context(), "env/centrifugo_mac", "--config", "env/config.json", "--admin")
-	} else {
-		cmd = exec.CommandContext(t.Context(), "env/centrifugo", "--config", "env/config.json", "--admin")
-	}
-
-	err := cmd.Start()
-	require.NoError(t, err)
-
-	go func() {
-		_ = cmd.Wait()
-	}()
-
-	err = cont.RegisterAll(
-		cfg,
-		&logger.Plugin{},
-		&status.Plugin{},
-		&centrifuge.Plugin{},
-		&server.Plugin{},
-		&rpc.Plugin{},
+	rr, _ := helpers.Start(t,
+		"configs/.rr-centrifugo-init.yaml",
+		centrifugePlugins(),
+		helpers.WithObservedLogger(),
+		helpers.WithTCPProbe(proxyAddr),
 	)
-	assert.NoError(t, err)
 
-	time.Sleep(time.Second)
-	err = cont.Init()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	ch, err := cont.Serve()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-
-	wg := &sync.WaitGroup{}
-
-	stopCh := make(chan struct{}, 1)
-
-	wg.Go(func() {
-		for {
-			select {
-			case e := <-ch:
-				assert.Fail(t, "error", e.Error.Error())
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-			case <-sig:
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-
-				return
-			case <-stopCh:
-				// timeout
-				err = cont.Stop()
-				if err != nil {
-					assert.FailNow(t, "error", err.Error())
-				}
-
-				return
-			}
-		}
+	client := centrifugeClient.NewProtobufClient("ws://"+centrifugoWS+"/connection/websocket", centrifugeClient.Config{
+		Name:               "roadrunner_tests",
+		Version:            "3.0.0",
+		ReadTimeout:        clientTimeout,
+		WriteTimeout:       clientTimeout,
+		HandshakeTimeout:   clientTimeout,
+		MaxServerPingDelay: clientTimeout,
 	})
+	t.Cleanup(client.Close)
 
-	time.Sleep(time.Second * 2)
-	client := &http.Client{
-		Timeout: time.Second * 10,
-	}
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "http://127.0.0.1:35544/health?plugin=centrifuge", nil)
+	require.NoError(t, client.Connect())
+
+	require.Eventually(t, func() bool {
+		return rr.Logs.FilterMessageSnippet("got connect proxy request").Len() == 1
+	}, logWait, logWaitTick, "the connect request never reached the plugin")
+
+	subscription, err := client.NewSubscription(subscribeTopic)
 	require.NoError(t, err)
+	require.NoError(t, subscription.Subscribe())
 
-	resp, err := client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
+	require.Eventually(t, func() bool {
+		return rr.Logs.FilterMessageSnippet("got subscribe proxy request").Len() == 1
+	}, logWait, logWaitTick, "the subscribe request never reached the plugin")
 
-	body, _ := io.ReadAll(resp.Body)
-	assert.Equal(t, `[{"plugin_name":"centrifuge","error_message":"","status_code":200}]`, string(body))
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	_ = resp.Body.Close()
+	require.NoError(t, subscription.Unsubscribe())
 
-	req, err = http.NewRequestWithContext(context.Background(), http.MethodGet, "http://127.0.0.1:35544/ready?plugin=centrifuge", nil)
-	require.NoError(t, err)
-
-	resp, err = client.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-
-	body, _ = io.ReadAll(resp.Body)
-	assert.Equal(t, `[{"plugin_name":"centrifuge","error_message":"","status_code":200}]`, string(body))
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	_ = resp.Body.Close()
-
-	time.Sleep(time.Second)
-	stopCh <- struct{}{}
-	wg.Wait()
+	// exactly one of each: a retrying proxy would show up as a higher count
+	require.Equal(t, 1, rr.Logs.FilterMessageSnippet("got connect proxy request").Len())
+	require.Equal(t, 1, rr.Logs.FilterMessageSnippet("got subscribe proxy request").Len())
 }

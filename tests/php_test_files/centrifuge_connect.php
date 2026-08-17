@@ -1,5 +1,8 @@
 <?php
 
+// deprecation notices on stdout corrupt the goridge frame
+ini_set('display_errors', 'stderr');
+
 require __DIR__ . '/vendor/autoload.php';
 
 use RoadRunner\Centrifugo\CentrifugoWorker;

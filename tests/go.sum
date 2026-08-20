@@ -61,8 +61,8 @@ github.com/prometheus/common v0.70.1 h1:1HvjP4D5oL3t8RsPlwxA9onvvStjtIHYE5XuuwOi
 github.com/prometheus/common v0.70.1/go.mod h1:VdFUQDMZK3VLkurFUVhia6uys/0suUp86TJz5qbJRhc=
 github.com/prometheus/procfs v0.21.1 h1:GljZCt+zSTS+NZq88cyQ1LjZ+RCHp3uVuabBWA5+OJI=
 github.com/prometheus/procfs v0.21.1/go.mod h1:aB55Cww9pdSJVHk0hUf0inxWyyjPogFIjmHKYgMKmtY=
-github.com/roadrunner-server/api-go/v6 v6.0.0-beta.13 h1:BAV1aKkRp51C1OXDfEYZXgfrXqn4O7bpr6Z/m5otwd8=
-github.com/roadrunner-server/api-go/v6 v6.0.0-beta.13/go.mod h1:Y4rsabWjr4Y10Jg6H8J5NDitQqlnXmGhCdgR+zyLYkI=
+github.com/roadrunner-server/api-go/v6 v6.0.0-beta.14 h1:sTskv/3ImOZlUdtHuj9uT24gm1gQl/qU8rFNvn3MzhU=
+github.com/roadrunner-server/api-go/v6 v6.0.0-beta.14/go.mod h1:Y4rsabWjr4Y10Jg6H8J5NDitQqlnXmGhCdgR+zyLYkI=
 github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2 h1:GqsZzWQ5jMXRF1O/b8IqFz9PLpS7Ui0K4OyACLql2MI=
 github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2/go.mod h1:2v4yUK5Kvbvq8C3IkDoBkuamq9h+7i/JLjyf7k1j5JM=
 github.com/roadrunner-server/config/v6 v6.0.0-beta.3 h1:G0EUzJ6Yw4UnleM6BhnOBbYPXKDHRmCJiGhC3nXDBwI=
@@ -83,8 +83,8 @@ github.com/roadrunner-server/rpc/v6 v6.0.0-beta.5 h1:FjwXfznbmyCEKFUHkxnvK8yo1HQ
 github.com/roadrunner-server/rpc/v6 v6.0.0-beta.5/go.mod h1:z387hZZOEJ3+bB8iW1PEAEXF3jUUb/dDLDnVSc1CNNQ=
 github.com/roadrunner-server/server/v6 v6.0.0-beta.6 h1:CPtH4eIYkeRKi5cPXxb0+J+LI824cqhIGXAfcH+nkjA=
 github.com/roadrunner-server/server/v6 v6.0.0-beta.6/go.mod h1:SbODuCzC2gcbFhAmJDWvjf34pPrUWP5NxxVsTRQDuZ4=
-github.com/roadrunner-server/status/v6 v6.0.0-beta.6 h1:OYOJMFvIOcAh9nP1VBZEoI/KdWn3j6S1vDFTRMbuwq0=
-github.com/roadrunner-server/status/v6 v6.0.0-beta.6/go.mod h1:0jKYYSH+iw0KmnGzJ7srjHK5P+NvkK3VThXUYu0tXVY=
+github.com/roadrunner-server/status/v6 v6.0.0-beta.7 h1:7adpXfaIY2nIt4P58avZH05y4R3cKXKLux16SFYG/+g=
+github.com/roadrunner-server/status/v6 v6.0.0-beta.7/go.mod h1:7EjsT+ULghsemlRpKoks250yJNWLdR/R8Ah/N5Q1NQE=
 github.com/roadrunner-server/tcplisten v1.5.2 h1:nn8yXYrhRDkfQ9AAu4V075uT4fZRmOnpxkawgE+bWPA=
 github.com/roadrunner-server/tcplisten v1.5.2/go.mod h1:DufGBz7Dlx2KrNe/4RukEvGMTqZKB0Uve1GztwcyyR8=
 github.com/rogpeppe/go-internal v1.14.1 h1:UQB4HGPB6osV0SQTLymcB4TgvyWu6ZyliaW0tI/otEQ=

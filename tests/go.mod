@@ -5,7 +5,7 @@ go 1.27
 toolchain go1.27.0
 
 require (
-	github.com/centrifugal/centrifuge-go v0.12.0
+	github.com/centrifugal/centrifuge-go v0.12.1
 	github.com/roadrunner-server/centrifuge/v6 v6.0.0
 	github.com/roadrunner-server/config/v6 v6.0.0-beta.3
 	github.com/roadrunner-server/endure/v2 v2.6.2
@@ -13,7 +13,7 @@ require (
 	github.com/roadrunner-server/rpc/v6 v6.0.0-beta.5
 	github.com/roadrunner-server/server/v6 v6.0.0-beta.6
 	github.com/roadrunner-server/status/v6 v6.0.0-beta.7
-	github.com/stretchr/testify v1.12.0
+	github.com/stretchr/testify v1.12.1
 )
 
 replace github.com/roadrunner-server/centrifuge/v6 => ../
@@ -21,7 +21,7 @@ replace github.com/roadrunner-server/centrifuge/v6 => ../
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/centrifugal/protocol v0.20.0 // indirect
+	github.com/centrifugal/protocol v0.21.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
@@ -70,8 +70,7 @@ require (
 	golang.org/x/sync v0.22.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.41.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260810153831-ec0a7760b754 // indirect
-	google.golang.org/grpc v1.83.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect
+	google.golang.org/grpc v1.83.1 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

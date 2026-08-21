@@ -7,7 +7,7 @@ toolchain go1.26.5
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/prometheus/client_golang v1.24.1
-	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.13
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.14
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2
 	github.com/roadrunner-server/errors v1.5.0
 	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.3

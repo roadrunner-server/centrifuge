@@ -2,6 +2,8 @@ module github.com/roadrunner-server/centrifuge/v6
 
 go 1.27
 
+toolchain go1.27.0
+
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/prometheus/client_golang v1.24.1

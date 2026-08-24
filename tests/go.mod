@@ -7,7 +7,7 @@ toolchain go1.27.0
 require (
 	github.com/centrifugal/centrifuge-go v0.12.1
 	github.com/roadrunner-server/centrifuge/v6 v6.0.0
-	github.com/roadrunner-server/config/v6 v6.0.0-beta.3
+	github.com/roadrunner-server/config/v6 v6.0.0-beta.4
 	github.com/roadrunner-server/endure/v2 v2.6.2
 	github.com/roadrunner-server/logger/v6 v6.0.0-beta.3
 	github.com/roadrunner-server/rpc/v6 v6.0.0-beta.5

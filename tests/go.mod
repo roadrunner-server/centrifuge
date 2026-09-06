@@ -6,6 +6,7 @@ toolchain go1.27.1
 
 require (
 	github.com/centrifugal/centrifuge-go v0.12.1
+	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.14
 	github.com/roadrunner-server/centrifuge/v6 v6.0.0
 	github.com/roadrunner-server/config/v6 v6.0.0-beta.4
 	github.com/roadrunner-server/endure/v2 v2.6.2
@@ -14,6 +15,7 @@ require (
 	github.com/roadrunner-server/server/v6 v6.0.0-beta.7
 	github.com/roadrunner-server/status/v6 v6.0.0-beta.8
 	github.com/stretchr/testify v1.12.1
+	google.golang.org/grpc v1.83.2
 )
 
 replace github.com/roadrunner-server/centrifuge/v6 => ../
@@ -42,13 +44,12 @@ require (
 	github.com/prometheus/client_model v0.6.3 // indirect
 	github.com/prometheus/common v0.71.0 // indirect
 	github.com/prometheus/procfs v0.22.0 // indirect
-	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.14 // indirect
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0-beta.2 // indirect
 	github.com/roadrunner-server/errors v1.5.0 // indirect
 	github.com/roadrunner-server/events v1.0.1 // indirect
 	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.3 // indirect
 	github.com/roadrunner-server/pool/v2 v2.0.0-beta.1 // indirect
-	github.com/roadrunner-server/tcplisten v1.5.2 // indirect
+	github.com/roadrunner-server/tcplisten v1.6.0 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/segmentio/encoding v0.5.4 // indirect
@@ -71,6 +72,5 @@ require (
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.41.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260904194346-d0f1323225a4 // indirect
-	google.golang.org/grpc v1.83.2 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 )

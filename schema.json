@@ -12,6 +12,9 @@
       "default": "tcp://127.0.0.1:30000",
       "minLength": 1
     },
+    "proxy_socket": {
+      "$ref": "https://raw.githubusercontent.com/roadrunner-server/tcplisten/v1.6.0/schema.json"
+    },
     "grpc_api_address": {
       "description": "The address/port of the gRPC server API.",
       "type": "string",

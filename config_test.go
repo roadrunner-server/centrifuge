@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/roadrunner-server/tcplisten"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -55,9 +56,34 @@ func TestConfigDefaults(t *testing.T) {
 
 	assert.Equal(t, "127.0.0.1:10000", cfg.GrpcAPIAddress)
 	assert.Equal(t, "tcp://127.0.0.1:30000", cfg.ProxyAddress)
+	assert.Nil(t, cfg.ProxySocket)
 	assert.Equal(t, "roadrunner", cfg.Name)
 	assert.Equal(t, "1.0.0", cfg.Version)
 	assert.NotNil(t, cfg.Pool)
+}
+
+func TestConfigProxySocketInvalid(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		addr string
+		mode string
+	}{
+		{name: "default TCP"},
+		{name: "TCP", addr: "127.0.0.1:0"},
+		{name: "TCP scheme", addr: "tcp://127.0.0.1:0", mode: "0600"},
+		{name: "empty UNIX path", addr: "unix://"},
+		{name: "invalid mode", addr: "unix://test.sock", mode: "600"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			cfg := &Config{
+				ProxyAddress:   tc.addr,
+				ProxySocket:    &tcplisten.UnixSocketOptions{Mode: tc.mode},
+				GrpcAPIAddress: "unix://outbound.sock",
+				TLS:            &TLS{Key: "missing.key", Cert: "missing.cert"},
+			}
+			require.ErrorContains(t, cfg.InitDefaults(), "centrifuge.proxy_socket")
+		})
+	}
 }
 
 func TestConfigTLSMissingKey(t *testing.T) {

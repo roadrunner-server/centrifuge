@@ -114,7 +114,7 @@ func (p *Plugin) Serve() chan error {
 		return errCh
 	}
 
-	l, err := tcplisten.CreateListener(p.cfg.ProxyAddress)
+	l, err := tcplisten.CreateListenerWithOptions(p.cfg.ProxyAddress, p.cfg.ProxySocket)
 	if err != nil {
 		errCh <- errors.E(op, err)
 

@@ -2,16 +2,19 @@ package centrifuge
 
 import (
 	stderrors "errors"
+	"fmt"
 	"os"
 	"strings"
 
 	"github.com/roadrunner-server/errors"
 	"github.com/roadrunner-server/pool/v2/pool"
+	"github.com/roadrunner-server/tcplisten"
 )
 
 type Config struct {
 	// host + port
-	ProxyAddress string `mapstructure:"proxy_address"`
+	ProxyAddress string                       `mapstructure:"proxy_address"`
+	ProxySocket  *tcplisten.UnixSocketOptions `mapstructure:"proxy_socket"`
 	// host + port
 	GrpcAPIAddress string `mapstructure:"grpc_api_address"`
 	UseCompressor  bool   `mapstructure:"use_compressor"`
@@ -40,6 +43,10 @@ func (c *Config) InitDefaults() error {
 
 	if c.ProxyAddress == "" {
 		c.ProxyAddress = "tcp://127.0.0.1:30000"
+	}
+
+	if err := c.ProxySocket.Validate(c.ProxyAddress); err != nil {
+		return errors.E(op, fmt.Errorf("centrifuge.proxy_socket: %w", err))
 	}
 
 	if c.Name == "" {

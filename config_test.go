@@ -62,6 +62,13 @@ func TestConfigDefaults(t *testing.T) {
 	assert.NotNil(t, cfg.Pool)
 }
 
+func TestConfigUnixProxyDefaults(t *testing.T) {
+	cfg := &Config{ProxyAddress: "unix://proxy.sock"}
+	require.NoError(t, cfg.InitDefaults())
+	require.Nil(t, cfg.ProxySocket)
+	require.Equal(t, "127.0.0.1:10000", cfg.GrpcAPIAddress)
+}
+
 func TestConfigProxySocketInvalid(t *testing.T) {
 	for _, tc := range []struct {
 		name string

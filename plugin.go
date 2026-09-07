@@ -77,19 +77,9 @@ func (p *Plugin) Init(cfg Configurer, log Logger, server Server) error {
 		return errors.E(op, errors.Disabled)
 	}
 
-	if cfg.Has("centrifuge.proxy_socket") {
-		if err := validateUnixSocketIDs(cfg, "centrifuge.proxy_socket"); err != nil {
-			return errors.E(op, err)
-		}
-	}
-
 	err := cfg.UnmarshalKey(name, &p.cfg)
 	if err != nil {
 		return errors.E(op, err)
-	}
-
-	if p.cfg.ProxySocket == nil && cfg.Has("centrifuge.proxy_socket") {
-		p.cfg.ProxySocket = &tcplisten.UnixSocketOptions{}
 	}
 
 	err = p.cfg.InitDefaults()

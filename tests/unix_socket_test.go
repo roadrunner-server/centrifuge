@@ -9,6 +9,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"sync"
 	"syscall"
@@ -31,22 +32,32 @@ func TestProxySocketConfig(t *testing.T) {
 		name    string
 		addr    string
 		options string
-		mode    string
-		zeroIDs bool
-		invalid bool
+		wantErr string
 	}{
 		{name: "default TCP"},
 		{name: "UNIX defaults", addr: "unix://test.sock"},
 		{name: "empty options", addr: "unix://test.sock", options: "{}"},
-		{name: "mode only", addr: "unix://test.sock", options: `{mode: "0600"}`, mode: "0600"},
-		{name: "explicit zero", addr: "unix://test.sock", options: `{mode: "0000", uid: 0, gid: 0}`, mode: "0000", zeroIDs: true},
-		{name: "unset mode", addr: "unix://test.sock", options: "{uid: 0, gid: 0}", zeroIDs: true},
-		{name: "default TCP options", options: "{}", invalid: true},
-		{name: "unquoted mode", addr: "unix://test.sock", options: "{mode: 0660}", invalid: true},
+		{name: "mode only", addr: "unix://test.sock", options: `{mode: "0600"}`},
+		{name: "explicit zero", addr: "unix://test.sock", options: `{mode: "0000", uid: 0, gid: 0}`},
+		{name: "unset mode", addr: "unix://test.sock", options: "{uid: 0, gid: 0}"},
+		{name: "default TCP empty options", options: "{}"},
+		{name: "default TCP options", options: `{mode: "0600"}`, wantErr: "filesystem unix:// address"},
+		{name: "TCP options", addr: "tcp://127.0.0.1:0", options: `{mode: "0600"}`, wantErr: "filesystem unix:// address"},
+		{name: "empty socket path", addr: "unix://", options: `{mode: "0600"}`, wantErr: "filesystem unix:// address"},
+		{name: "invalid mode", addr: "unix://test.sock", options: `{mode: "0780"}`, wantErr: "invalid unix socket mode"},
+		{name: "unquoted mode", addr: "unix://test.sock", options: "{mode: 0660}", wantErr: "invalid unix socket mode"},
+		{name: "scalar options", addr: "unix://test.sock", options: "false", wantErr: "expected a map"},
+		{name: "negative UID", addr: "unix://test.sock", options: "{uid: -1}", wantErr: "invalid unix socket uid"},
+		{name: "negative GID", addr: "unix://test.sock", options: "{gid: -1}", wantErr: "invalid unix socket gid"},
+		{name: "reserved UID", addr: "unix://test.sock", options: "{uid: 4294967295}", wantErr: "invalid unix socket uid"},
+		{name: "reserved GID", addr: "unix://test.sock", options: "{gid: 4294967295}", wantErr: "invalid unix socket gid"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), ".rr.yaml")
-			data := fmt.Sprintf("version: '3'\ncentrifuge:\n  proxy_address: %q\n", tc.addr)
+			data := fmt.Sprintf(`version: "3"
+centrifuge:
+  proxy_address: %q
+`, tc.addr)
 			if tc.options != "" {
 				data += "  proxy_socket: " + tc.options + "\n"
 			}
@@ -57,113 +68,12 @@ func TestProxySocketConfig(t *testing.T) {
 			require.NoError(t, log.Init(cfg))
 			p := &centrifuge.Plugin{}
 			err := p.Init(cfg, log.ServiceLogger(), nil)
-			if tc.invalid {
-				require.ErrorContains(t, err, "centrifuge.proxy_socket")
+			if tc.wantErr != "" {
+				require.ErrorContains(t, err, tc.wantErr)
 				return
 			}
 			require.NoError(t, err)
-			var decoded centrifuge.Config
-			require.NoError(t, cfg.UnmarshalKey("centrifuge", &decoded))
-			if tc.options == "{}" {
-				require.True(t, cfg.Has("centrifuge.proxy_socket"))
-				require.Nil(t, decoded.ProxySocket)
-				return
-			}
-			require.NoError(t, decoded.InitDefaults())
-			require.Equal(t, "127.0.0.1:10000", decoded.GrpcAPIAddress)
-			options := decoded.ProxySocket
-			if tc.options == "" {
-				require.Nil(t, options)
-				return
-			}
-			require.NotNil(t, options)
-			require.Equal(t, tc.mode, options.Mode)
-			if tc.zeroIDs {
-				require.NotNil(t, options.UID)
-				require.NotNil(t, options.GID)
-				require.Zero(t, *options.UID)
-				require.Zero(t, *options.GID)
-			} else {
-				require.Nil(t, options.UID)
-				require.Nil(t, options.GID)
-			}
 		})
-	}
-}
-
-func TestProxySocketRawIDs(t *testing.T) {
-	for _, field := range []string{"uid", "gid"} {
-		for _, tc := range []struct {
-			value   string
-			env     string
-			want    int
-			invalid bool
-		}{
-			{value: "null"},
-			{value: "0"},
-			{value: "33.0", want: 33},
-			{value: `"0x21"`, want: 33},
-			{value: `"${RR_TEST_SOCKET_ID}"`, env: "0"},
-			{value: `"${RR_TEST_SOCKET_ID}"`, env: "33", want: 33},
-			{value: `"${RR_TEST_SOCKET_ID}"`, invalid: true},
-			{value: `""`, invalid: true},
-			{value: "1.9", invalid: true},
-			{value: "-0.5", invalid: true},
-			{value: "true", invalid: true},
-			{value: "false", invalid: true},
-			{value: "-1", invalid: true},
-			{value: "4294967295", invalid: true},
-			{value: `"4294967295"`, invalid: true},
-			{value: "[]", invalid: true},
-			{value: "{}", invalid: true},
-		} {
-			t.Run(field+"/"+tc.value+"/"+tc.env, func(t *testing.T) {
-				t.Setenv("RR_TEST_SOCKET_ID", tc.env)
-				if tc.env == "" {
-					require.NoError(t, os.Unsetenv("RR_TEST_SOCKET_ID"))
-				}
-				dir := t.TempDir()
-				socket := filepath.Join(dir, "proxy.sock")
-				path := filepath.Join(dir, ".rr.json")
-				data := fmt.Sprintf(`{"version":"3","centrifuge":{
-					"proxy_address":%q,"proxy_socket":{%q:%s},
-					"grpc_api_address":"tcp://127.0.0.1:10000"}}`, "unix://"+socket, field, tc.value)
-				require.NoError(t, os.WriteFile(path, []byte(data), 0o600))
-				cfg := &config.Plugin{Path: path}
-				require.NoError(t, cfg.Init())
-				log := &logger.Plugin{}
-				require.NoError(t, log.Init(cfg))
-				p := &centrifuge.Plugin{}
-				err := p.Init(cfg, log.ServiceLogger(), nil)
-				_, statErr := os.Stat(socket)
-				require.ErrorIs(t, statErr, os.ErrNotExist)
-				if tc.invalid {
-					require.ErrorContains(t, err, "centrifuge.proxy_socket."+field)
-					return
-				}
-				require.NoError(t, err)
-				var decoded centrifuge.Config
-				require.NoError(t, cfg.UnmarshalKey("centrifuge", &decoded))
-				require.NoError(t, decoded.InitDefaults())
-				require.Equal(t, "127.0.0.1:10000", decoded.GrpcAPIAddress)
-				options := decoded.ProxySocket
-				if tc.value == "null" {
-					if options != nil {
-						require.Nil(t, options.UID)
-						require.Nil(t, options.GID)
-					}
-					return
-				}
-				require.NotNil(t, options)
-				id, unset := options.UID, options.GID
-				if field == "gid" {
-					id, unset = options.GID, options.UID
-				}
-				require.NotNil(t, id)
-				require.Equal(t, tc.want, *id)
-				require.Nil(t, unset)
-			})
-		}
 	}
 }
 
@@ -227,4 +137,64 @@ centrifuge:
 	require.NoError(t, stop())
 	_, err = os.Stat("proxy.sock")
 	require.ErrorIs(t, err, os.ErrNotExist)
+}
+
+func TestProxySocketOwnershipError(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("Requires an unprivileged process.")
+	}
+	worker, err := filepath.Abs("php_test_files/centrifuge_connect.php")
+	require.NoError(t, err)
+	groups, err := os.Getgroups()
+	require.NoError(t, err)
+	otherGID := 0
+	for otherGID == os.Getegid() || slices.Contains(groups, otherGID) {
+		otherGID++
+	}
+
+	for _, tc := range []struct {
+		field string
+		id    int
+	}{
+		{field: "uid", id: 0},
+		{field: "gid", id: otherGID},
+	} {
+		t.Run(tc.field, func(t *testing.T) {
+			t.Chdir(t.TempDir())
+			t.Setenv("RR_TEST_SOCKET_ID", strconv.Itoa(tc.id))
+			data := fmt.Sprintf(`version: "3"
+server:
+  command: [php, %q]
+centrifuge:
+  proxy_address: unix://ownership.sock
+  proxy_socket: {%s: "${RR_TEST_SOCKET_ID}"}
+  pool:
+    num_workers: 1
+    destroy_timeout: 5s
+`, worker, tc.field)
+			require.NoError(t, os.WriteFile(".rr.yaml", []byte(data), 0o600))
+			cfg := &config.Plugin{Path: ".rr.yaml"}
+			require.NoError(t, cfg.Init())
+			log := &logger.Plugin{}
+			require.NoError(t, log.Init(cfg))
+			rrServer := &server.Plugin{}
+			require.NoError(t, rrServer.Init(cfg, log.ServiceLogger()))
+			t.Cleanup(func() { require.NoError(t, rrServer.Stop(context.Background())) })
+			p := &centrifuge.Plugin{}
+			require.NoError(t, p.Init(cfg, log.ServiceLogger(), rrServer))
+			t.Cleanup(func() {
+				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				defer cancel()
+				require.NoError(t, p.Stop(ctx))
+			})
+			select {
+			case errS := <-p.Serve():
+				require.ErrorContains(t, errS, "chown unix socket")
+			case <-time.After(5 * time.Second):
+				t.Fatal("Centrifuge did not report the ownership error")
+			}
+			_, errS := os.Stat("ownership.sock")
+			require.ErrorIs(t, errS, os.ErrNotExist)
+		})
+	}
 }

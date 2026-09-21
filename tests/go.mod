@@ -15,7 +15,7 @@ require (
 	github.com/roadrunner-server/server/v6 v6.0.0-beta.7
 	github.com/roadrunner-server/status/v6 v6.0.0-beta.8
 	github.com/stretchr/testify v1.12.1
-	google.golang.org/grpc v1.83.2
+	google.golang.org/grpc v1.84.0
 )
 
 replace github.com/roadrunner-server/centrifuge/v6 => ../

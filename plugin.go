@@ -174,7 +174,11 @@ func (p *Plugin) Workers() []*process.State {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 
-	workers := p.workers()
+	if p.pool == nil {
+		return nil
+	}
+
+	workers := p.pool.Workers()
 	if workers == nil {
 		return nil
 	}
@@ -227,13 +231,4 @@ func (p *Plugin) RPC() any {
 		client: p.client,
 		log:    p.log,
 	}
-}
-
-// internal
-func (p *Plugin) workers() []*worker.Process {
-	if p == nil || p.pool == nil {
-		return nil
-	}
-
-	return p.pool.Workers()
 }

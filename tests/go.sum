@@ -73,8 +73,8 @@ github.com/roadrunner-server/rpc/v6 v6.0.0-beta.6 h1:AMo1Xl2ihZnRwU0L6s/epcrc2ay
 github.com/roadrunner-server/rpc/v6 v6.0.0-beta.6/go.mod h1:VhI4zwjYgSSJd2dKS7saM+LdRc9ycPv6NAmKHKSFySQ=
 github.com/roadrunner-server/server/v6 v6.0.0-beta.7 h1:EiRKdWFPOYLoYy53xoLbyU8854FQdmyTRSdtHRWoK2s=
 github.com/roadrunner-server/server/v6 v6.0.0-beta.7/go.mod h1:uq0yIZgp1v80BGIHPZHKHFyYIWTVJJvofThaC8QWf7w=
-github.com/roadrunner-server/status/v6 v6.0.0-beta.8 h1:Ya1/vZnPgRUc4eWDTVihLbptS5z9olBUypwXSnH6olw=
-github.com/roadrunner-server/status/v6 v6.0.0-beta.8/go.mod h1:y/TqFnBItSHmhvnvZD+xqX5hTcIRGcQBoVrltizy9Pg=
+github.com/roadrunner-server/status/v6 v6.0.0 h1:MKRpG/WL7H9wFdawdMUsSfCkuGPMoiJtsurlVSy7Qbw=
+github.com/roadrunner-server/status/v6 v6.0.0/go.mod h1:GKcJiz+mHNk1Ud3Gfv3LmLTYBUJ5hrFzT2cQWYS/mVw=
 github.com/roadrunner-server/tcplisten v1.6.1 h1:P7EYsgwdMZO47huUgn1xAIFhYgEs9s72MoLZZWbxNiM=
 github.com/roadrunner-server/tcplisten v1.6.1/go.mod h1:M01BcmhsBiek8WfkiRQwVXwVamgZ5YV36Wa0hz937dA=
 github.com/rogpeppe/go-internal v1.14.1 h1:UQB4HGPB6osV0SQTLymcB4TgvyWu6ZyliaW0tI/otEQ=

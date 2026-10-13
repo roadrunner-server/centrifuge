@@ -10,7 +10,7 @@ require (
 	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.15
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0
 	github.com/roadrunner-server/errors v1.6.0
-	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.3
+	github.com/roadrunner-server/goridge/v4 v4.0.0
 	github.com/roadrunner-server/pool/v2 v2.0.0-beta.1
 	github.com/roadrunner-server/tcplisten v1.6.1
 	github.com/stretchr/testify v1.12.1

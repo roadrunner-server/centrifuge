@@ -2,16 +2,16 @@ module github.com/roadrunner-server/centrifuge/v6
 
 go 1.27
 
-toolchain go1.27.1
+toolchain go1.27.2
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/prometheus/client_golang v1.24.1
-	github.com/roadrunner-server/api-go/v6 v6.0.0-beta.15
+	github.com/prometheus/client_golang v1.25.0
+	github.com/roadrunner-server/api-go/v6 v6.1.0
 	github.com/roadrunner-server/api-plugins/v6 v6.0.0
 	github.com/roadrunner-server/errors v1.6.0
-	github.com/roadrunner-server/goridge/v4 v4.0.0-beta.3
-	github.com/roadrunner-server/pool/v2 v2.0.0-beta.1
+	github.com/roadrunner-server/goridge/v4 v4.0.0
+	github.com/roadrunner-server/pool/v2 v2.0.0
 	github.com/roadrunner-server/tcplisten v1.6.1
 	github.com/stretchr/testify v1.12.1
 	google.golang.org/grpc v1.84.0
@@ -30,17 +30,17 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/client_model v0.6.3 // indirect
-	github.com/prometheus/common v0.72.0 // indirect
+	github.com/prometheus/common v0.72.1 // indirect
 	github.com/prometheus/procfs v0.22.0 // indirect
-	github.com/roadrunner-server/events v1.0.1 // indirect
+	github.com/roadrunner-server/events v1.1.0 // indirect
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
 	github.com/tklauser/go-sysconf v0.4.0 // indirect
 	github.com/tklauser/numcpus v0.12.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/net v0.59.0 // indirect
-	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20261005182115-fad411399dd8 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261012220534-4341edf3f941 // indirect
 )

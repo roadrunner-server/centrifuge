@@ -5,7 +5,7 @@ go 1.27
 toolchain go1.27.2
 
 require (
-	github.com/centrifugal/centrifuge-go v0.12.1
+	github.com/centrifugal/centrifuge-go v0.13.0
 	github.com/roadrunner-server/api-go/v6 v6.1.0
 	github.com/roadrunner-server/centrifuge/v6 v6.0.0
 	github.com/roadrunner-server/config/v6 v6.0.0
@@ -23,6 +23,7 @@ replace github.com/roadrunner-server/centrifuge/v6 => ../
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/centrifugal/fdelta v0.0.3 // indirect
 	github.com/centrifugal/protocol v0.23.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/fatih/color v1.19.0 // indirect
@@ -48,7 +49,6 @@ require (
 	github.com/roadrunner-server/pool/v2 v2.0.0 // indirect
 	github.com/roadrunner-server/tcplisten v1.6.1 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect
-	github.com/shadowspore/fossil-delta v0.0.0-20241213113458-1d797d70cbe3 // indirect
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect

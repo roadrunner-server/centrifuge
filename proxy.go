@@ -4,7 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 
 	centrifugov1 "github.com/roadrunner-server/api-go/v6/centrifugo/proxy/v1"
 	"github.com/roadrunner-server/errors"
@@ -33,7 +34,7 @@ func (p *Proxy) Connect(ctx context.Context, request *centrifugov1.ConnectReques
 	}
 	md.Append("type", "connect")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +74,7 @@ func (p *Proxy) Refresh(ctx context.Context, request *centrifugov1.RefreshReques
 	}
 	md.Append("type", "refresh")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +115,7 @@ func (p *Proxy) Subscribe(ctx context.Context, request *centrifugov1.SubscribeRe
 	}
 	md.Append("type", "subscribe")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +156,7 @@ func (p *Proxy) Publish(ctx context.Context, request *centrifugov1.PublishReques
 	}
 	md.Append("type", "publish")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +197,7 @@ func (p *Proxy) RPC(ctx context.Context, request *centrifugov1.RPCRequest) (*cen
 	}
 	md.Append("type", "rpc")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +238,7 @@ func (p *Proxy) SubRefresh(ctx context.Context, request *centrifugov1.SubRefresh
 	}
 	md.Append("type", "subrefresh")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +279,7 @@ func (p *Proxy) NotifyCacheEmpty(ctx context.Context, request *centrifugov1.Noti
 	}
 	md.Append("type", "notifycacheempty")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +320,7 @@ func (p *Proxy) NotifyChannelState(ctx context.Context, request *centrifugov1.No
 	}
 	md.Append("type", "notifychannelstate")
 
-	meta, err := json.Marshal(md)
+	meta, err := json.Marshal(md, jsontext.AllowInvalidUTF8(true))
 	if err != nil {
 		return nil, err
 	}

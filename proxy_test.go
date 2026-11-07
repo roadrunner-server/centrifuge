@@ -20,6 +20,7 @@ import (
 // success path is not reproducible here.
 type fakePool struct {
 	execErr error
+	context []byte
 }
 
 func (f *fakePool) Workers() []*worker.Process           { return nil }
@@ -28,7 +29,8 @@ func (f *fakePool) AddWorker() error                     { return nil }
 func (f *fakePool) Reset(_ context.Context) error        { return nil }
 func (f *fakePool) Destroy(_ context.Context)            {}
 
-func (f *fakePool) Exec(_ context.Context, _ *payload.Payload, _ chan struct{}) (chan *staticPool.PExec, error) {
+func (f *fakePool) Exec(_ context.Context, p *payload.Payload, _ chan struct{}) (chan *staticPool.PExec, error) {
+	f.context = append([]byte(nil), p.Context...)
 	return nil, f.execErr
 }
 
@@ -88,4 +90,31 @@ func TestProxyStreamingNotSupported(t *testing.T) {
 
 	require.Error(t, p.SubscribeUnidirectional(&centrifugov1.SubscribeRequest{}, nil))
 	require.Error(t, p.SubscribeBidirectional(nil))
+}
+
+func TestProxyMetadataJSON(t *testing.T) {
+	tests := []struct {
+		name        string
+		key         string
+		value       string
+		wantContext string
+	}{
+		{name: "text metadata", key: "key", value: "<value>", wantContext: `{"key":["<value>"],"type":["connect"]}`},
+		{name: "binary metadata", key: "key-bin", value: "\xff", wantContext: `{"key-bin":["�"],"type":["connect"]}`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			execErr := errors.New("exec failed")
+			pool := &fakePool{execErr: execErr}
+			p := &Proxy{
+				log: testLogger(),
+				pw:  newPoolMuWrapper(pool, &sync.RWMutex{}),
+			}
+			ctx := metadata.NewIncomingContext(t.Context(), metadata.Pairs(tt.key, tt.value))
+			_, err := p.Connect(ctx, &centrifugov1.ConnectRequest{})
+			require.ErrorIs(t, err, execErr)
+			require.JSONEq(t, tt.wantContext, string(pool.context))
+			require.NotContains(t, string(pool.context), `\u003c`)
+		})
+	}
 }

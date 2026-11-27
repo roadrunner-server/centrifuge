@@ -1,25 +1,96 @@
 package centrifuge
 
 import (
+	"context"
+	"log/slog"
 	"net/http"
+	"os/exec"
 	"testing"
 
+	"github.com/roadrunner-server/pool/v2/fsm"
+	"github.com/roadrunner-server/pool/v2/payload"
+	staticPool "github.com/roadrunner-server/pool/v2/pool/static_pool"
+	"github.com/roadrunner-server/pool/v2/worker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestPluginStatusNilPool(t *testing.T) {
-	p := &Plugin{}
+type mockPool struct{ workers []*worker.Process }
 
-	st, err := p.Status()
+func (m *mockPool) Workers() []*worker.Process           { return m.workers }
+func (m *mockPool) RemoveWorker(_ context.Context) error { return nil }
+func (m *mockPool) AddWorker() error                     { return nil }
+func (m *mockPool) Exec(_ context.Context, _ *payload.Payload, _ chan struct{}) (chan *staticPool.PExec, error) {
+	return nil, nil
+}
+func (m *mockPool) Reset(_ context.Context) error { return nil }
+func (m *mockPool) Destroy(_ context.Context)     {}
+
+func newWorkerInState(t *testing.T, state int64) *worker.Process {
+	t.Helper()
+
+	w, err := worker.InitBaseWorker(exec.CommandContext(t.Context(), "centrifuge-status-test-worker"), worker.WithLog(slog.New(slog.DiscardHandler)))
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusServiceUnavailable, st.Code)
+
+	if state == fsm.StateWorking {
+		w.State().Transition(fsm.StateReady)
+	}
+	w.State().Transition(state)
+	require.True(t, w.State().Compare(state))
+
+	return w
 }
 
-func TestPluginReadyNilPool(t *testing.T) {
-	p := &Plugin{}
+func TestPluginStatusAndReady(t *testing.T) {
+	tests := []struct {
+		name       string
+		pool       Pool
+		statusCode int
+		readyCode  int
+	}{
+		{
+			name:       "nil pool",
+			pool:       nil,
+			statusCode: http.StatusServiceUnavailable,
+			readyCode:  http.StatusServiceUnavailable,
+		},
+		{
+			name:       "no workers",
+			pool:       &mockPool{},
+			statusCode: http.StatusServiceUnavailable,
+			readyCode:  http.StatusServiceUnavailable,
+		},
+		{
+			name:       "inactive worker",
+			pool:       &mockPool{workers: []*worker.Process{newWorkerInState(t, fsm.StateInactive)}},
+			statusCode: http.StatusServiceUnavailable,
+			readyCode:  http.StatusServiceUnavailable,
+		},
+		{
+			name:       "ready worker",
+			pool:       &mockPool{workers: []*worker.Process{newWorkerInState(t, fsm.StateReady)}},
+			statusCode: http.StatusOK,
+			readyCode:  http.StatusOK,
+		},
+		{
+			name:       "working worker",
+			pool:       &mockPool{workers: []*worker.Process{newWorkerInState(t, fsm.StateWorking)}},
+			statusCode: http.StatusOK,
+			readyCode:  http.StatusOK,
+		},
+	}
 
-	st, err := p.Ready()
-	require.NoError(t, err)
-	assert.Equal(t, http.StatusServiceUnavailable, st.Code)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := &Plugin{pool: tt.pool}
+
+			st, err := p.Status()
+			require.NoError(t, err)
+			assert.Equal(t, tt.statusCode, st.Code)
+
+			rd, err := p.Ready()
+			require.NoError(t, err)
+			assert.Equal(t, tt.readyCode, rd.Code)
+		})
+	}
 }

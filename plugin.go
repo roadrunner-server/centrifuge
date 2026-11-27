@@ -105,14 +105,13 @@ func (p *Plugin) Serve() chan error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	var err error
-	p.pool, err = p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{RRMode: RRModeCentrifuge}, nil)
-
+	pl, err := p.server.NewPool(context.Background(), p.cfg.Pool, map[string]string{RRMode: RRModeCentrifuge}, nil)
 	if err != nil {
 		errCh <- err
 
 		return errCh
 	}
+	p.pool = pl
 
 	l, err := tcplisten.CreateListenerWithOptions(p.cfg.ProxyAddress, p.cfg.ProxySocket)
 	if err != nil {
